@@ -29,9 +29,11 @@
             android:layout_centerInParent="true"
 
             android_custom:roundColor="@color/colorFogBlue"
-            android_custom:roundProgressColor="@android:color/holo_green_dark"
+            android_custom:roundProgressColor="@color/colorGreen"
             android_custom:roundWidth="18dp"
-            app:textIsDisplayable="true" />
+            android_custom:max = "100"
+            android_custom:progress="100"
+            android_custom:style = "INTERVAL"/>
 
         <ImageView
             android:id="@+id/iv_round_btn"

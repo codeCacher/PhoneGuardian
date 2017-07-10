@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,16 +15,30 @@ import com.cs.phoneguardian.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Created by Administrator on 2017/7/9.
  * 主界面功能列表第一页
  */
 
-public class MainPageOneFragment extends Fragment implements FunctionItemAdapter.OnItemClickedListener {
+public class MainViewPagerFragment extends Fragment implements FunctionItemAdapter.OnItemClickedListener{
     @BindView(R.id.rv_grid)
     RecyclerView rvGrid;
     private GridLayoutManager mGridLayoutManager;
     private FunctionItemAdapter mFunctionItemAdapter;
+    private String[] mNameList;
+    private Integer[] mPictureIdList;
+
+    public MainViewPagerFragment() {
+        mNameList = new String[]{};
+        mPictureIdList = new Integer[]{};
+    }
+
+    public void setArgument(String[] nameList,Integer[] pictureIdList) {
+        this.mNameList = checkNotNull(nameList);
+        this.mPictureIdList = checkNotNull(pictureIdList);
+    }
 
     @Nullable
     @Override
@@ -34,7 +47,7 @@ public class MainPageOneFragment extends Fragment implements FunctionItemAdapter
         ButterKnife.bind(this, view);
 
         initFuncGrid();
-        setOnClickListener();
+        setFuncItemOnClickListener();
 
         return view;
     }
@@ -42,18 +55,15 @@ public class MainPageOneFragment extends Fragment implements FunctionItemAdapter
     /**
      * 初始化功能列表
      */
-    private void initFuncGrid(){
-        String[] nameList = new String[]{"加速优化","空间清理","骚扰拦截","省电管理","流量管理","通知中心"};
-        Integer[] pictureIdList = new Integer[]{R.drawable.accelerate,R.drawable.clean,R.drawable.accelerate,
-                R.drawable.accelerate,R.drawable.accelerate,R.drawable.accelerate};
-        mFunctionItemAdapter = new FunctionItemAdapter(getContext(), nameList, pictureIdList);
+    public void initFuncGrid(){
+        mFunctionItemAdapter = new FunctionItemAdapter(getContext(), mNameList, mPictureIdList);
         mGridLayoutManager = new GridLayoutManager(getContext(), 3);
         rvGrid.setAdapter(mFunctionItemAdapter);
         rvGrid.setLayoutManager(mGridLayoutManager);
         rvGrid.addItemDecoration(new FuncItemDecoration(getContext(),1));
     }
 
-    private void setOnClickListener() {
+    public void setFuncItemOnClickListener() {
         mFunctionItemAdapter.setOnItemClickedLisener(this);
     }
 

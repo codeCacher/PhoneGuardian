@@ -12,6 +12,7 @@ import com.cs.phoneguardian.R;
 
 /**
  * Created by Administrator on 2017/7/10.
+ * 主页面功能列表分割线
  */
 
 public class FuncItemDecoration extends RecyclerView.ItemDecoration {
