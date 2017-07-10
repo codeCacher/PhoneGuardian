@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android_custom="http://schemas.android.com/apk/res/com.cs.phoneguardian"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
+
+    <ImageView
+        android:id="@+id/iv_setting"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:src="@drawable/setting" />
+
+    <RelativeLayout
+        android:id="@+id/rl_round"
+        android:layout_width="230dp"
+        android:layout_height="230dp"
+        android:layout_below="@+id/iv_setting"
+        android:layout_centerHorizontal="true">
+
+        <com.cs.phoneguardian.view.RoundProgressBar
+            android:id="@+id/rpb_progress"
+            android:layout_width="230dp"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+
+            android_custom:roundColor="@color/colorFogBlue"
+            android_custom:roundProgressColor="@android:color/holo_green_dark"
+            android_custom:roundWidth="18dp"
+            app:textIsDisplayable="true" />
+
+        <ImageView
+            android:id="@+id/iv_round_btn"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:src="@drawable/scan_btn_selector" />
+
+        <TextView
+            android:id="@+id/tv_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="100"
+            android:textColor="@android:color/white"
+            android:textSize="40sp" />
+
+        <TextView
+            android:id="@+id/tv_little"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/tv_score"
+            android:layout_gravity="center"
+            android:layout_toRightOf="@+id/tv_score"
+            android:text="分"
+            android:textColor="@android:color/white"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/tv_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_score"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:text="点击扫描"
+            android:textColor="@android:color/white"
+            android:textSize="10sp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_statuse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_round"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="还没有体检过"
+        android:textColor="@android:color/white"
+        android:textSize="15sp" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tv_statuse"
+        android:layout_marginTop="20dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_dot_right"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:layout_margin="3dp"
+            android:src="@drawable/dot_fog_blue" />
+
+        <ImageView
+            android:id="@+id/iv_dot_left"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:layout_margin="3dp"
+            android:src="@drawable/dot_white" />
+    </LinearLayout>
+
+</RelativeLayout>
