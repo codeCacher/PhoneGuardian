@@ -9,11 +9,25 @@
         <attr name="progress" format="integer"/>
         <attr name="intervalCount" format="integer"/>
         <attr name="startAngle" format="integer"/>
+
+        <attr name="progressDotColor" format="color"/>
+        <attr name="progressDotWidth" format="dimension"/>
+        <attr name="progressDotVisible" format="boolean"/>
+
         <attr name="style">
             <enum name="STROKE" value="0"/>
             <enum name="FILL" value="1"/>
             <enum name="INTERVAL" value="2"/>
         </attr>
-    </declare-styleable> 
-    
+    </declare-styleable>
+
+    <declare-styleable name="WaitDot">
+        <attr name="circleColor" format="color"/>
+        <attr name="dotColor" format="color"/>
+        <attr name="circleThick" format="dimension"/>
+        <attr name="dotWidth" format="dimension"/>
+        <attr name="circleVisible" format="boolean"/>
+        <attr name="angle" format="integer"/>
+    </declare-styleable>
+
 </resources>

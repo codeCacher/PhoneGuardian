@@ -6,10 +6,17 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.view.View;
 
 import com.cs.phoneguardian.R;
+
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * 仿iphone带进度的进度条，线程安全的View，可直接在线程中更新进度
@@ -67,6 +74,9 @@ public class RoundProgressBar extends View {
     public static final int INTERVAL = 2;
 
     private RectF mOval;
+    private boolean progressDotVisible;
+    private final int progressDotColor;
+    private float progressDotWidth;
 
 
     public RoundProgressBar(Context context) {
@@ -87,14 +97,19 @@ public class RoundProgressBar extends View {
                 R.styleable.RoundProgressBar);
 
         //获取自定义属性和默认值
-        roundColor = mTypedArray.getColor(R.styleable.RoundProgressBar_roundColor, Color.RED);
-        roundProgressColor = mTypedArray.getColor(R.styleable.RoundProgressBar_roundProgressColor, Color.GREEN);
+        roundColor = mTypedArray.getColor(R.styleable.RoundProgressBar_roundColor, Color.WHITE);
+        roundProgressColor = mTypedArray.getColor(R.styleable.RoundProgressBar_roundProgressColor, Color.WHITE);
         roundWidth = mTypedArray.getDimension(R.styleable.RoundProgressBar_roundWidth, 5);
         max = mTypedArray.getInteger(R.styleable.RoundProgressBar_max, 100);
         progress = mTypedArray.getInteger(R.styleable.RoundProgressBar_progress, 0);
         startAngle = mTypedArray.getInteger(R.styleable.RoundProgressBar_startAngle, 90);
         intervalCount = mTypedArray.getInteger(R.styleable.RoundProgressBar_intervalCount, 100);
         style = mTypedArray.getInt(R.styleable.RoundProgressBar_style, FILL);
+
+
+        progressDotVisible = mTypedArray.getBoolean(R.styleable.RoundProgressBar_progressDotVisible, false);
+        progressDotColor = mTypedArray.getColor(R.styleable.RoundProgressBar_progressDotColor, Color.WHITE);
+        progressDotWidth = mTypedArray.getFloat(R.styleable.RoundProgressBar_progressDotWidth, 20);
 
         mTypedArray.recycle();
     }
@@ -151,7 +166,20 @@ public class RoundProgressBar extends View {
                 paint.setStyle(Paint.Style.STROKE);
                 for (int i = 0; i < 1f * progress * intervalCount / max; i++) {
                     canvas.drawArc(mOval, i * 360f / intervalCount + startAngle, 180f / intervalCount, false, paint);
+                    //画进度点
+                    if(progressDotVisible && i==1f * progress * intervalCount / max-1){
+                        float a = i * 360f / intervalCount+90f / intervalCount;
+                        float r = radius-roundWidth/2f- progressDotWidth;
+
+                        double x = r - r * Math.sin(a/180f*Math.PI) + progressDotWidth + roundWidth;
+                        double y = r + r * Math.cos(a/180f*Math.PI) + progressDotWidth + roundWidth;
+                        paint.setColor(progressDotColor); //设置圆点的颜色
+                        paint.setStyle(Paint.Style.FILL); //设置实心
+                        paint.setAntiAlias(true);  //消除锯齿
+                        canvas.drawCircle((float) x, (float) y, progressDotWidth / 2, paint);
+                    }
                 }
+
                 break;
         }
 
@@ -203,6 +231,49 @@ public class RoundProgressBar extends View {
 
     }
 
+    public interface OnProgressChangeListener{
+        void OnProgressChange(int progress);
+    }
+
+    /**
+     * 从开始的百分比扫到结束百分比动画
+     * @param startPercent 起始的百分比
+     * @param endPercent 结束的百分比
+     * @param duration 时间
+     * @param listener 进度监听
+     */
+    public void swip(final int startPercent, final int endPercent, int duration, final OnProgressChangeListener listener){
+        final int swipPercent = endPercent-startPercent;
+        final int interval = duration/swipPercent;
+        Observable.create(new Observable.OnSubscribe<Integer>() {
+            @Override
+            public void call(Subscriber<? super Integer> subscriber) {
+                for (int i = startPercent; i <= endPercent; i++) {
+                    SystemClock.sleep(interval);
+                    subscriber.onNext(i);
+                }
+                subscriber.onCompleted();
+            }
+        })
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Integer>() {
+                    @Override
+                    public void onCompleted() {}
+
+                    @Override
+                    public void onError(Throwable e) {}
+
+                    @Override
+                    public void onNext(Integer integer) {
+                        RoundProgressBar.this.setProgress(integer);
+                        if(listener!=null){
+                            listener.OnProgressChange(integer);
+                        }
+                    }
+                });
+    }
+
     public int getRoundColor() {
         return roundColor;
     }
@@ -251,22 +322,3 @@ public class RoundProgressBar extends View {
         this.intervalCount = intervalCount;
     }
 }
-//    final int finalMaxProgress = maxProgress;
-//        Observable.create(new Observable.OnSubscribe<Integer>() {
-//@Override
-//public void call(Subscriber<? super Integer> subscriber) {
-//        for (int i = 1; i <= finalMaxProgress; i++) {
-//        SystemClock.sleep(20);
-//        subscriber.onNext(i);
-//        }
-//        subscriber.onCompleted();
-//        }
-//        })
-//        .subscribeOn(Schedulers.newThread())
-//        .observeOn(AndroidSchedulers.mainThread())
-//        .subscribe(new Action1<Integer>() {
-//@Override
-//public void call(Integer i) {
-//        rpbProgress.setProgress(i);
-//        }
-//        });

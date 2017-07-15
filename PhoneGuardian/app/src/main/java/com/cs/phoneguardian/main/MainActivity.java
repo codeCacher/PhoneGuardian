@@ -18,6 +18,7 @@ import com.cs.phoneguardian.R;
 import com.cs.phoneguardian.utils.Constants;
 import com.cs.phoneguardian.utils.SharedPreferencesUtils;
 import com.cs.phoneguardian.view.RoundProgressBar;
+import com.cs.phoneguardian.view.WaitDot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
     ImageView ivDotRight;
     @BindView(R.id.iv_dot_left)
     ImageView ivDotLeft;
+    @BindView(R.id.wd_wait_dot)
+    WaitDot wdWaitDot;
     private List<Fragment> mFragmentList;
     private MainViewPagerAdapter mMainViewPagerAdapter;
 
@@ -79,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
                 translateAnimation.setDuration(500);
                 translateAnimation.setFillAfter(true);
                 vp.startAnimation(translateAnimation);
+
+                wdWaitDot.startRotate(2000);
             }
         });
     }
