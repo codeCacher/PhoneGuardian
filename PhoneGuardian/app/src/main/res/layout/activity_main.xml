@@ -31,6 +31,7 @@
             android_custom:roundColor="@color/colorFogBlue"
             android_custom:roundProgressColor="@color/colorGreen"
             android_custom:roundWidth="18dp"
+            android_custom:radius="115dp"
             android_custom:max = "100"
             android_custom:progress="100"
             android_custom:style = "INTERVAL"/>

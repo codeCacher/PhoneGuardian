@@ -7,12 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cs.phoneguardian.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.Inflater;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,6 +35,7 @@ public class ActiveAppAdapter extends RecyclerView.Adapter {
     AccContract.Presenter mPresenter;
     List<AppInfo> mUserAppList;
     List<AppInfo> mSysAppList;
+    private OnItemClickedListener mOnItemClickedListener;
 
     public ActiveAppAdapter(Context context, AccContract.Presenter presenter) {
         this.mContext = context;
@@ -45,6 +48,16 @@ public class ActiveAppAdapter extends RecyclerView.Adapter {
         this.mUserAppList = mUserAppList;
         this.mSysAppList = mSysAppList;
         this.notifyDataSetChanged();
+    }
+
+    public interface OnItemClickedListener {
+        void OnUserAppItemClicked(int position);
+
+        void OnSysAppItemClicked(int position);
+    }
+
+    public void setOnItemClickedListener(OnItemClickedListener listener) {
+        this.mOnItemClickedListener = listener;
     }
 
     @Override
@@ -79,7 +92,7 @@ public class ActiveAppAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         int itemViewType = getItemViewType(position);
         switch (itemViewType) {
             case TYPE_TOTLE_APP_NUM:
@@ -94,22 +107,56 @@ public class ActiveAppAdapter extends RecyclerView.Adapter {
                 break;
 
             case TYPE_SYS_APP_NUM:
-                ActiveAppCountViewHolder sysCountHolder = (ActiveAppCountViewHolder) holder;
+                final ActiveAppCountViewHolder sysCountHolder = (ActiveAppCountViewHolder) holder;
                 sysCountHolder.tvCount.setText("关键应用：" + mSysAppList.size() + "个");
                 break;
 
             case TYPE_USER_APP:
-                ActiveUserAppViewHolder userAppHolder = (ActiveUserAppViewHolder) holder;
+                final ActiveUserAppViewHolder userAppHolder = (ActiveUserAppViewHolder) holder;
                 userAppHolder.ivIcon.setImageDrawable(mUserAppList.get(position - 2).getIcon());
                 userAppHolder.tvName.setText(mUserAppList.get(position - 2).getName());
-                userAppHolder.tvMemSize.setText("内存："+Formatter.formatFileSize(mContext,mUserAppList.get(position-2).getMemSize()));
+                userAppHolder.tvMemSize.setText("内存：" + Formatter.formatFileSize(mContext, mUserAppList.get(position - 2).getMemSize()));
+
+                //设置点击事件
+                final int userFinalPosition = position - 2;
+                userAppHolder.rlRoot.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AppInfo appInfo = mUserAppList.get(userFinalPosition);
+                        if (appInfo.isSeleced()) {
+                            appInfo.setSeleced(false);
+                            userAppHolder.ivCheckState.setImageResource(R.drawable.checkbox_uncheck);
+                        } else {
+                            appInfo.setSeleced(true);
+                            userAppHolder.ivCheckState.setImageResource(R.drawable.checkbox_checked);
+                        }
+                        if (mOnItemClickedListener != null) {
+
+                            mOnItemClickedListener.OnUserAppItemClicked(userFinalPosition);
+                        }
+
+                    }
+                });
+
                 break;
 
             case TYPE_SYS_APP:
                 ActiveSysAppViewHolder sysAppHolder = (ActiveSysAppViewHolder) holder;
-                sysAppHolder.ivIcon.setImageDrawable(mSysAppList.get(position - 3-mUserAppList.size()).getIcon());
-                sysAppHolder.tvName.setText(mSysAppList.get(position - 3-mUserAppList.size()).getName());
-                sysAppHolder.tvMemSize.setText("内存："+Formatter.formatFileSize(mContext,mSysAppList.get(position - 3-mUserAppList.size()).getMemSize()));
+                sysAppHolder.ivIcon.setImageDrawable(mSysAppList.get(position - 3 - mUserAppList.size()).getIcon());
+                sysAppHolder.tvName.setText(mSysAppList.get(position - 3 - mUserAppList.size()).getName());
+                sysAppHolder.tvMemSize.setText("内存：" + Formatter.formatFileSize(mContext, mSysAppList.get(position - 3 - mUserAppList.size()).getMemSize()));
+
+                //设置点击事件
+                final int sysFinalPosition = position - 3 - mUserAppList.size();
+                sysAppHolder.rlRoot.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mOnItemClickedListener != null) {
+                            mOnItemClickedListener.OnSysAppItemClicked(sysFinalPosition);
+                        }
+                    }
+                });
+
                 break;
         }
 
@@ -139,6 +186,8 @@ public class ActiveAppAdapter extends RecyclerView.Adapter {
         TextView tvMemSize;
         @BindView(R.id.iv_check_state)
         ImageView ivCheckState;
+        @BindView(R.id.rl_root)
+        RelativeLayout rlRoot;
 
         ActiveUserAppViewHolder(View itemView) {
             super(itemView);
@@ -155,6 +204,8 @@ public class ActiveAppAdapter extends RecyclerView.Adapter {
         TextView tvMemSize;
         @BindView(R.id.iv_detail)
         ImageView ivDetail;
+        @BindView(R.id.rl_root)
+        RelativeLayout rlRoot;
 
         ActiveSysAppViewHolder(View itemView) {
             super(itemView);

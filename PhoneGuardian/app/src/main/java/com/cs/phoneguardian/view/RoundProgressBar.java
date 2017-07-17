@@ -19,14 +19,11 @@ import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
- * 仿iphone带进度的进度条，线程安全的View，可直接在线程中更新进度
- *
- * @author xiaanming
- *         http://blog.csdn.net/xiaanming/article/details/10298163
+ * 圆形进度条
  */
 public class RoundProgressBar extends View {
     /**
-     * 画笔对象的引用
+     * 画笔
      */
     private Paint paint;
 
@@ -56,7 +53,7 @@ public class RoundProgressBar extends View {
     private int progress;
 
     /**
-     * 进度的风格，实心或者空心
+     * 进度的风格
      */
     private int style;
 
@@ -64,20 +61,37 @@ public class RoundProgressBar extends View {
      * 开始的角度
      */
     private int startAngle;
+
     /**
      * 当为间隔模式时，为间隔的数量
      */
     private int intervalCount;
+
+    /**
+     * 间隔模式时是否有进度指示点
+     */
+    private boolean progressDotVisible;
+
+    /**
+     * 进度指示点的颜色
+     */
+    private final int progressDotColor;
+
+    /**
+     * 进度指示点宽度
+     */
+    private float progressDotWidth;
+
+    /**
+     * 进度条外圆半径
+     */
+    private float radiusOut;
 
     public static final int STROKE = 0;
     public static final int FILL = 1;
     public static final int INTERVAL = 2;
 
     private RectF mOval;
-    private boolean progressDotVisible;
-    private final int progressDotColor;
-    private float progressDotWidth;
-
 
     public RoundProgressBar(Context context) {
         this(context, null);
@@ -100,13 +114,12 @@ public class RoundProgressBar extends View {
         roundColor = mTypedArray.getColor(R.styleable.RoundProgressBar_roundColor, Color.WHITE);
         roundProgressColor = mTypedArray.getColor(R.styleable.RoundProgressBar_roundProgressColor, Color.WHITE);
         roundWidth = mTypedArray.getDimension(R.styleable.RoundProgressBar_roundWidth, 5);
+        radiusOut = mTypedArray.getDimension(R.styleable.RoundProgressBar_radius, 100);
         max = mTypedArray.getInteger(R.styleable.RoundProgressBar_max, 100);
         progress = mTypedArray.getInteger(R.styleable.RoundProgressBar_progress, 0);
         startAngle = mTypedArray.getInteger(R.styleable.RoundProgressBar_startAngle, 90);
         intervalCount = mTypedArray.getInteger(R.styleable.RoundProgressBar_intervalCount, 100);
         style = mTypedArray.getInt(R.styleable.RoundProgressBar_style, FILL);
-
-
         progressDotVisible = mTypedArray.getBoolean(R.styleable.RoundProgressBar_progressDotVisible, false);
         progressDotColor = mTypedArray.getColor(R.styleable.RoundProgressBar_progressDotColor, Color.WHITE);
         progressDotWidth = mTypedArray.getFloat(R.styleable.RoundProgressBar_progressDotWidth, 20);
@@ -122,8 +135,9 @@ public class RoundProgressBar extends View {
         /**
          * 画最外层的大圆环
          */
-        float centre = getWidth() / 2f; //获取圆心的x坐标
-        float radius = (centre - roundWidth / 2f); //圆环的半径
+        float centreX = getWidth() / 2f; //获取圆心的x坐标
+        float centreY = getHeight() / 2f; //获取圆心的y坐标
+        float radius = radiusOut - roundWidth / 2f;
         paint.setColor(roundColor); //设置圆环的颜色
         paint.setStyle(Paint.Style.STROKE); //设置空心
         paint.setStrokeWidth(roundWidth); //设置圆环的宽度
@@ -131,11 +145,11 @@ public class RoundProgressBar extends View {
         switch (style) {
             case FILL:
             case STROKE:
-                canvas.drawCircle(centre, centre, radius, paint); //画出圆环
+                canvas.drawCircle(centreX, centreY, radius, paint); //画出圆环
                 break;
             case INTERVAL:
                 //用于定义的圆弧的形状和大小的界限
-                mOval = new RectF(centre - radius, centre - radius, centre + radius, centre + radius);
+                mOval = new RectF(centreX - radius, centreY - radius, centreX + radius, centreY + radius);
                 for (int i = 0; i < intervalCount; i++) {
                     canvas.drawArc(mOval, i * 360f / intervalCount, 180f / intervalCount, false, paint);
                 }
@@ -145,12 +159,10 @@ public class RoundProgressBar extends View {
         /**
          * 画圆弧 ，画圆环的进度
          */
-
-        //设置进度是实心还是空心
         paint.setStrokeWidth(roundWidth); //设置圆环的宽度
         paint.setColor(roundProgressColor);  //设置进度的颜色
-        RectF oval = new RectF(centre - radius, centre - radius, centre
-                + radius, centre + radius);  //用于定义的圆弧的形状和大小的界限
+        RectF oval = new RectF(centreX - radius, centreY - radius, centreX
+                + radius, centreY + radius);  //用于定义的圆弧的形状和大小的界限
 
         switch (style) {
             case STROKE:
@@ -171,8 +183,8 @@ public class RoundProgressBar extends View {
                         float a = i * 360f / intervalCount+90f / intervalCount;
                         float r = radius-roundWidth/2f- progressDotWidth;
 
-                        double x = r - r * Math.sin(a/180f*Math.PI) + progressDotWidth + roundWidth;
-                        double y = r + r * Math.cos(a/180f*Math.PI) + progressDotWidth + roundWidth;
+                        double x = centreX - r * Math.sin(a/180f*Math.PI);
+                        double y = centreY + r * Math.cos(a/180f*Math.PI);
                         paint.setColor(progressDotColor); //设置圆点的颜色
                         paint.setStyle(Paint.Style.FILL); //设置实心
                         paint.setAntiAlias(true);  //消除锯齿
@@ -193,7 +205,7 @@ public class RoundProgressBar extends View {
     /**
      * 设置进度的最大值
      *
-     * @param max
+     * @param max 进度最大值
      */
     public synchronized void setMax(int max) {
         if (max < 0) {
@@ -205,7 +217,7 @@ public class RoundProgressBar extends View {
     /**
      * 获取进度.需要同步
      *
-     * @return
+     * @return 当前进度
      */
     public synchronized int getProgress() {
         return progress;
@@ -215,7 +227,7 @@ public class RoundProgressBar extends View {
      * 设置进度，此为线程安全控件，由于考虑多线的问题，需要同步
      * 刷新界面调用postInvalidate()能在非UI线程刷新
      *
-     * @param progress
+     * @param progress 设置的进度
      */
     public synchronized void setProgress(int progress) {
         if (progress < 0) {

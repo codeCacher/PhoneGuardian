@@ -4,15 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.Formatter;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
@@ -21,7 +17,7 @@ import android.widget.TextView;
 import com.cs.phoneguardian.R;
 import com.cs.phoneguardian.modle.AppInfoDataSource;
 import com.cs.phoneguardian.modle.PhoneStateDataSource;
-import com.cs.phoneguardian.utils.DisplayUtils;
+import com.cs.phoneguardian.view.NestScrollLayout;
 import com.cs.phoneguardian.view.RoundProgressBar;
 
 import java.util.List;
@@ -45,16 +41,16 @@ public class AccActivity extends AppCompatActivity implements AccContract.View {
     RelativeLayout rlPercent;
     @BindView(R.id.tv_mem_size)
     TextView tvMemSize;
-    @BindView(R.id.nsv)
-    NestedScrollView nsv;
-    @BindView(R.id.rv_active_app)
+    @BindView(R.id.child_id)
     RecyclerView rvActiveApp;
     @BindView(R.id.rl_title)
     RelativeLayout rlTitle;
     @BindView(R.id.rl_top)
     RelativeLayout rlTop;
-    @BindView(R.id.cl_root)
-    CoordinatorLayout clRoot;
+    @BindView(R.id.mask_id)
+    View maskId;
+    @BindView(R.id.nsl)
+    NestScrollLayout nsl;
 
     private AccContract.Presenter mPresenter;
     private ActiveAppAdapter mActiveAppAdapter;
@@ -65,13 +61,14 @@ public class AccActivity extends AppCompatActivity implements AccContract.View {
         setContentView(R.layout.activity_acc);
         ButterKnife.bind(this);
 
+        nsl.init(rlTitle.getLayoutParams().height,rlTop.getLayoutParams().height,rlTop);
+
         AccPresenter.getInstance(AppInfoDataSource.getInstance(this), PhoneStateDataSource.getInstance(this), this);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rvActiveApp.setLayoutManager(linearLayoutManager);
         mActiveAppAdapter = new ActiveAppAdapter(this, mPresenter);
         rvActiveApp.setAdapter(mActiveAppAdapter);
-
     }
 
     @Override
@@ -100,7 +97,7 @@ public class AccActivity extends AppCompatActivity implements AccContract.View {
         translateAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                nsv.setVisibility(View.VISIBLE);
+                rvActiveApp.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -111,7 +108,7 @@ public class AccActivity extends AppCompatActivity implements AccContract.View {
             public void onAnimationRepeat(Animation animation) {
             }
         });
-        nsv.startAnimation(translateAnimation);
+        rvActiveApp.startAnimation(translateAnimation);
 
         rpbPercent.swip(0, percent, 500, new RoundProgressBar.OnProgressChangeListener() {
             @Override
@@ -148,47 +145,5 @@ public class AccActivity extends AppCompatActivity implements AccContract.View {
     @Override
     public void upDateAppList(List<AppInfo> userAppList, List<AppInfo> sysAppList) {
         mActiveAppAdapter.updateList(userAppList, sysAppList);
-    }
-
-    @Override
-    public void initNestedScrollView() {
-        //初始化高度
-        DisplayUtils displayUtils = DisplayUtils.getInstance(this);
-        final int statusBarHeight = displayUtils.getStatusBarHeight();
-        int displayHeight = displayUtils.getDisplayHeight();
-        ViewGroup.LayoutParams layoutParams = nsv.getLayoutParams();
-        layoutParams.height = displayHeight - statusBarHeight - rlTitle.getHeight();
-        nsv.setLayoutParams(layoutParams);
-
-        //初始化滚动事件控制
-        rvActiveApp.setNestedScrollingEnabled(false);
-
-        nsv.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-
-                Log.e("haha",nsv.getTop()+"");
-
-
-                if(scrollY>0&& nsv.getTop()>statusBarHeight+rlTitle.getHeight()){
-                    nsv.smoothScrollTo(0,0);
-                }
-            }
-        });
-
-        rlTop.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                Log.e("haha",top+"");
-
-            }
-        });
-
-        nsv.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                Log.e("haha",top+"");
-            }
-        });
     }
 }

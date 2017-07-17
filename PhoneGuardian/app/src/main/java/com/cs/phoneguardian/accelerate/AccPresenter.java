@@ -19,6 +19,8 @@ public class AccPresenter implements AccContract.Presenter {
     AppInfoDataSource mAppInfoDataSource;
     PhoneStateDataSource mPhoneStateDataSource;
     AccContract.View mAccView;
+    private List<AppInfo> runningUserAppList;
+    private List<AppInfo> runningSysAppList;
 
     private AccPresenter(AppInfoDataSource appInfoDataSource, PhoneStateDataSource phoneStateDataSource, AccContract.View accView) {
         this.mAppInfoDataSource = appInfoDataSource;
@@ -43,11 +45,9 @@ public class AccPresenter implements AccContract.Presenter {
 
             @Override
             public void onNext(List<AppInfo> list) {
-
-                mAccView.initNestedScrollView();
-
-                List<AppInfo> runningUserAppList = new ArrayList<>();
-                List<AppInfo> runningSysAppList = new ArrayList<>();
+                //初始化应用列表
+                runningUserAppList = new ArrayList<>();
+                runningSysAppList = new ArrayList<>();
                 for (AppInfo appInfo : list) {
                     if(appInfo.isSystem()){
                         runningSysAppList.add(appInfo);
@@ -55,8 +55,9 @@ public class AccPresenter implements AccContract.Presenter {
                         runningUserAppList.add(appInfo);
                     }
                 }
-                mAccView.upDateAppList(runningUserAppList,runningSysAppList);
+                mAccView.upDateAppList(runningUserAppList, runningSysAppList);
 
+                //初始化数据
                 final long totleRAMSize = mPhoneStateDataSource.getTotleRAMSize();
                 final long usedRAMSize = mPhoneStateDataSource.getUsedRAMSize();
                 final int percent = (int) (1f*usedRAMSize/totleRAMSize*100);
@@ -72,7 +73,6 @@ public class AccPresenter implements AccContract.Presenter {
                         mAccView.showState(percent);
                     }
                 },1000);
-
             }
         });
 

@@ -33,7 +33,6 @@ public interface AccContract {
         void showMemoryPercent(int percent);
         void showState(int precent);
         void upDateAppList(List<AppInfo> userAppList, List<AppInfo> sysAppList);
-        void initNestedScrollView();
     }
 
     interface Presenter extends BasePresenter {
