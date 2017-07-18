@@ -101,9 +101,8 @@ public class NestScrollLayout extends LinearLayout implements NestedScrollingPar
         }
 
         //滚动Top
-        int dy = y - getScrollY();
         if (mTopView != null) {
-            mTopView.layout(mTopView.getLeft(), mTopView.getTop() - dy / 2, mTopView.getRight(), mTopView.getBottom() - dy / 2);
+            mTopView.layout(mTopView.getLeft(), -y / 2, mTopView.getRight(), mDefaultTopHeight- y / 2);
         }
 
         //设置mask阴影

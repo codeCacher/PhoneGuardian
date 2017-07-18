@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">" PhoneGuardian"</string>
+    <string name="app_name">"PhoneGuardian"</string>
+    <string name="device_admin">"PhoneGuardian"</string>
+    <string name="device_admin_description">""</string>
 </resources>

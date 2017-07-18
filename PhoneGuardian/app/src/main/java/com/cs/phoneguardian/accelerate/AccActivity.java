@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,8 +12,11 @@ import android.text.format.Formatter;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cs.phoneguardian.R;
 import com.cs.phoneguardian.modle.AppInfoDataSource;
@@ -51,9 +55,46 @@ public class AccActivity extends AppCompatActivity implements AccContract.View {
     View maskId;
     @BindView(R.id.nsl)
     NestScrollLayout nsl;
+    @BindView(R.id.tv_total_count)
+    TextView tvTotalCount;
+    @BindView(R.id.ll_total_count)
+    LinearLayout llTotalCount;
+    @BindView(R.id.tv_user_app_count)
+    TextView tvUserAppCount;
+    @BindView(R.id.ll_user_app_count)
+    LinearLayout llUserAppCount;
+    @BindView(R.id.tv_sys_app_count)
+    TextView tvSysAppCount;
+    @BindView(R.id.ll_sys_app_count)
+    LinearLayout llSysAppCount;
+    @BindView(R.id.iv_end)
+    ImageView ivEnd;
+    @BindView(R.id.tv_end)
+    TextView tvEnd;
+    @BindView(R.id.rl_end)
+    RelativeLayout rlEnd;
+    @BindView(R.id.iv_select_all)
+    ImageView ivSelectAll;
+    @BindView(R.id.tv_select_all)
+    TextView tvSelectAll;
+    @BindView(R.id.rl_select_all)
+    RelativeLayout rlSelectAll;
+    @BindView(R.id.iv_setting)
+    ImageView ivSetting;
+    @BindView(R.id.tv_setting)
+    TextView tvSetting;
+    @BindView(R.id.rl_setting)
+    RelativeLayout rlSetting;
 
     private AccContract.Presenter mPresenter;
     private ActiveAppAdapter mActiveAppAdapter;
+    private int mMinMaskHeight;
+    private int mDefaultMaskHeight;
+    private LinearLayoutManager mLinearLayoutManager;
+    private int mDefaultCountTitleTop;
+    private int mCountTitleHeight;
+    private int mAppItemHeight;
+    private boolean mSelectAll;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,14 +102,35 @@ public class AccActivity extends AppCompatActivity implements AccContract.View {
         setContentView(R.layout.activity_acc);
         ButterKnife.bind(this);
 
-        nsl.init(rlTitle.getLayoutParams().height,rlTop.getLayoutParams().height,rlTop);
+        mMinMaskHeight = rlTitle.getLayoutParams().height;
+        mDefaultMaskHeight = rlTop.getLayoutParams().height;
+        nsl.init(mMinMaskHeight, mDefaultMaskHeight, rlTop);
 
         AccPresenter.getInstance(AppInfoDataSource.getInstance(this), PhoneStateDataSource.getInstance(this), this);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        rvActiveApp.setLayoutManager(linearLayoutManager);
+        mLinearLayoutManager = new LinearLayoutManager(this);
+        rvActiveApp.setLayoutManager(mLinearLayoutManager);
         mActiveAppAdapter = new ActiveAppAdapter(this, mPresenter);
         rvActiveApp.setAdapter(mActiveAppAdapter);
+
+        rlEnd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.killSelectedProcess();
+            }
+        });
+        rlSelectAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mSelectAll){
+                    mSelectAll  =false;
+                    mPresenter.cacelSelectAll();
+                }else {
+                    mSelectAll = true;
+                    mPresenter.selectAll();
+                }
+            }
+        });
     }
 
     @Override
@@ -127,8 +189,12 @@ public class AccActivity extends AppCompatActivity implements AccContract.View {
 
     @Override
     public void showMemoryPercent(int percent) {
-        rpbPercent.setProgress(percent);
-        tvPercent.setText(percent + "");
+        rpbPercent.swip(rpbPercent.getProgress(), percent, 500, new RoundProgressBar.OnProgressChangeListener() {
+            @Override
+            public void OnProgressChange(int progress) {
+                tvPercent.setText(progress + "");
+            }
+        });
     }
 
     @Override
@@ -145,5 +211,107 @@ public class AccActivity extends AppCompatActivity implements AccContract.View {
     @Override
     public void upDateAppList(List<AppInfo> userAppList, List<AppInfo> sysAppList) {
         mActiveAppAdapter.updateList(userAppList, sysAppList);
+    }
+
+    @Override
+    public void showCountTitle(int totalCount, int userAppCount, int sysAppCount) {
+        tvTotalCount.setText(totalCount + "个应用正在后台运行");
+        tvUserAppCount.setText("普通应用：" + userAppCount + "个");
+        tvSysAppCount.setText("关键应用：" + sysAppCount + "个");
+    }
+
+    @Override
+    public void showEndBtnEnable(int appCount) {
+        ivEnd.setImageResource(R.drawable.end_app);
+        tvEnd.setText("一键结束（" + appCount + "）");
+        tvEnd.setTextColor(this.getResources().getColor(android.R.color.black));
+    }
+
+    @Override
+    public void showEndBtnDisable() {
+        ivEnd.setImageResource(R.drawable.end_app_highlight);
+        tvEnd.setText("一键结束（0）");
+        tvEnd.setTextColor(this.getResources().getColor(R.color.colorGrayBlack));
+    }
+
+    @Override
+    public void showSelectAllBtnEnable() {
+        ivSelectAll.setImageResource(R.drawable.select_all_highlight);
+        tvSelectAll.setTextColor(this.getResources().getColor(R.color.colorGreen));
+    }
+
+    @Override
+    public void showSelectAllBtnDisalbe() {
+        ivSelectAll.setImageResource(R.drawable.select_all);
+        tvSelectAll.setTextColor(this.getResources().getColor(android.R.color.black));
+    }
+
+    @Override
+    public void showToastTotalClearMemory(int appCount, long memorySize) {
+        Toast.makeText(this,"已结束"+appCount+"个应用，释放"+Formatter.formatFileSize(this,memorySize)+"内存",Toast.LENGTH_SHORT).show();
+    }
+
+    //TODO 该逻辑比较复杂，可考虑简化
+    @Override
+    public void initCountTitle() {
+        nsl.setOnScrollListener(new NestScrollLayout.OnScrollListener() {
+            @Override
+            public void OnScroll(int y) {
+                if (y == mDefaultMaskHeight - mMinMaskHeight) {
+                    llTotalCount.setVisibility(View.VISIBLE);
+                    llUserAppCount.setVisibility(View.VISIBLE);
+                } else {
+                    llTotalCount.setVisibility(View.INVISIBLE);
+                    llUserAppCount.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+        mDefaultCountTitleTop = llTotalCount.getLayoutParams().height + rlTitle.getLayoutParams().height;
+        mCountTitleHeight = llTotalCount.getLayoutParams().height;
+        mAppItemHeight = 2 * mCountTitleHeight;
+        rvActiveApp.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            private int mDY;
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int position = mLinearLayoutManager.findFirstVisibleItemPosition();
+                if (mActiveAppAdapter.mUserAppList.size() > 0) {
+                    if (position == 1 + mActiveAppAdapter.mUserAppList.size()) {
+                        mDY += dy;
+                        if (mDY > mAppItemHeight / 2) {
+                            llSysAppCount.setVisibility(View.VISIBLE);
+                        } else if (mDY < mAppItemHeight / 2) {
+                            llSysAppCount.setVisibility(View.INVISIBLE);
+                        }
+                        int top = llUserAppCount.getTop() - dy;
+                        int bottom = llUserAppCount.getBottom() - dy;
+                        llUserAppCount.layout(llUserAppCount.getLeft(), top, llUserAppCount.getRight(), bottom);
+                    } else if (position == mActiveAppAdapter.mUserAppList.size()) {
+                        mDY = 0;
+                        llUserAppCount.layout(llUserAppCount.getLeft(), mDefaultCountTitleTop, llUserAppCount.getRight(), mDefaultCountTitleTop + llUserAppCount.getLayoutParams().height);
+                        llSysAppCount.setVisibility(View.INVISIBLE);
+                    } else if (position > 1 + mActiveAppAdapter.mUserAppList.size()) {
+                        mDY = mAppItemHeight;
+                        llSysAppCount.setVisibility(View.VISIBLE);
+                    } else if (!ViewCompat.canScrollVertically(rvActiveApp, -1)) {
+                        llUserAppCount.layout(llUserAppCount.getLeft(), mDefaultCountTitleTop, llUserAppCount.getRight(), mDefaultCountTitleTop + llUserAppCount.getLayoutParams().height);
+                    }
+                } else {
+                    if (!ViewCompat.canScrollVertically(rvActiveApp, -1)) {
+                        llUserAppCount.layout(llUserAppCount.getLeft(), mDefaultCountTitleTop, llUserAppCount.getRight(), mDefaultCountTitleTop + llUserAppCount.getLayoutParams().height);
+                    } else if (position == 0) {
+                        int top = llUserAppCount.getTop() - dy;
+                        int bottom = llUserAppCount.getBottom() - dy;
+                        llUserAppCount.layout(llUserAppCount.getLeft(), top, llUserAppCount.getRight(), bottom);
+                        llSysAppCount.setVisibility(View.INVISIBLE);
+                    } else {
+                        llSysAppCount.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        });
     }
 }

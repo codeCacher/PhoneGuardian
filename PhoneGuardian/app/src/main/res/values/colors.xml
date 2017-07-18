@@ -7,7 +7,7 @@
     <color name="colorGrayBlue">#8b9df9</color>
     <color name="colorGreen">#05f531</color>
     <color name="colorOrange">#ff7002</color>
-    <color name="colorFogWhite">#e1e1e1</color>
+    <color name="colorFogWhite">#f5f5f5</color>
     <color name="colorDecorationWhite">#b4b4b4</color>
-    <color name="colorGrayBlack">#3e3e3e</color>
+    <color name="colorGrayBlack">#606060</color>
 </resources>

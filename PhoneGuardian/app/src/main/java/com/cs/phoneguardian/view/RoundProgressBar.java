@@ -255,14 +255,21 @@ public class RoundProgressBar extends View {
      * @param listener 进度监听
      */
     public void swip(final int startPercent, final int endPercent, int duration, final OnProgressChangeListener listener){
-        final int swipPercent = endPercent-startPercent;
+        final int swipPercent = Math.max(Math.abs(endPercent-startPercent),1);
         final int interval = duration/swipPercent;
         Observable.create(new Observable.OnSubscribe<Integer>() {
             @Override
             public void call(Subscriber<? super Integer> subscriber) {
-                for (int i = startPercent; i <= endPercent; i++) {
-                    SystemClock.sleep(interval);
-                    subscriber.onNext(i);
+                if(endPercent>=startPercent){
+                    for (int i = startPercent; i <= endPercent; i++) {
+                        SystemClock.sleep(interval);
+                        subscriber.onNext(i);
+                    }
+                }else {
+                    for (int i = startPercent; i >= endPercent; i--) {
+                        SystemClock.sleep(interval);
+                        subscriber.onNext(i);
+                    }
                 }
                 subscriber.onCompleted();
             }

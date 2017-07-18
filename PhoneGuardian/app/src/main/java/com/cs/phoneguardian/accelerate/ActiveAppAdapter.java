@@ -116,6 +116,11 @@ public class ActiveAppAdapter extends RecyclerView.Adapter {
                 userAppHolder.ivIcon.setImageDrawable(mUserAppList.get(position - 2).getIcon());
                 userAppHolder.tvName.setText(mUserAppList.get(position - 2).getName());
                 userAppHolder.tvMemSize.setText("内存：" + Formatter.formatFileSize(mContext, mUserAppList.get(position - 2).getMemSize()));
+                if(mUserAppList.get(position-2).isSeleced()){
+                    userAppHolder.ivCheckState.setImageResource(R.drawable.checkbox_checked);
+                }else {
+                    userAppHolder.ivCheckState.setImageResource(R.drawable.checkbox_uncheck);
+                }
 
                 //设置点击事件
                 final int userFinalPosition = position - 2;
@@ -130,6 +135,9 @@ public class ActiveAppAdapter extends RecyclerView.Adapter {
                             appInfo.setSeleced(true);
                             userAppHolder.ivCheckState.setImageResource(R.drawable.checkbox_checked);
                         }
+
+                        mPresenter.setEndBtnState();
+
                         if (mOnItemClickedListener != null) {
 
                             mOnItemClickedListener.OnUserAppItemClicked(userFinalPosition);

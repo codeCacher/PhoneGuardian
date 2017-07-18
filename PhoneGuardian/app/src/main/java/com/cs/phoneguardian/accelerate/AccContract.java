@@ -33,10 +33,20 @@ public interface AccContract {
         void showMemoryPercent(int percent);
         void showState(int precent);
         void upDateAppList(List<AppInfo> userAppList, List<AppInfo> sysAppList);
+        void showCountTitle(int totalCount,int userAppCount,int sysAppCount);
+        void showEndBtnEnable(int appCount);
+        void showEndBtnDisable();
+        void showSelectAllBtnEnable();
+        void showSelectAllBtnDisalbe();
+        void showToastTotalClearMemory(int appCount,long memorySize);
+        void initCountTitle();
     }
 
     interface Presenter extends BasePresenter {
-
+        void setEndBtnState();
+        void selectAll();
+        void cacelSelectAll();
+        void killSelectedProcess();
     }
 
 }
