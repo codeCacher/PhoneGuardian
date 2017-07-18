@@ -11,4 +11,6 @@ public class Constants {
      * 上一次的体检分数的SP
      */
     public static final String CHECK_RESULT = "checkResult";
+
+    //Activity之间传递数据的Key
 }

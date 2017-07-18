@@ -1,5 +1,7 @@
 package com.cs.phoneguardian.accelerate;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.os.Handler;
 import android.util.Log;
@@ -14,6 +16,7 @@ import rx.Subscriber;
 
 /**
  * Created by SEELE on 2017/7/13.
+ * 加速页面presenter
  */
 
 public class AccPresenter implements AccContract.Presenter {
@@ -34,7 +37,7 @@ public class AccPresenter implements AccContract.Presenter {
         accView.setPresenter(this);
     }
 
-    public static AccPresenter getInstance(AppInfoDataSource appInfoDataSource, PhoneStateDataSource phoneStateDataSource, AccContract.View accView) {
+    static AccPresenter getInstance(AppInfoDataSource appInfoDataSource, PhoneStateDataSource phoneStateDataSource, AccContract.View accView) {
         return new AccPresenter(appInfoDataSource, phoneStateDataSource, accView);
     }
 
@@ -54,30 +57,45 @@ public class AccPresenter implements AccContract.Presenter {
                 //初始化应用列表
                 runningUserAppList = new ArrayList<>();
                 runningSysAppList = new ArrayList<>();
+                //区分系统应用和用户应用
                 for (AppInfo appInfo : list) {
+                    appInfo.setSeleced(true);
                     if (appInfo.isSystem()) {
                         runningSysAppList.add(appInfo);
                     } else {
                         runningUserAppList.add(appInfo);
                     }
                 }
+                //区分是否有加速锁
+                int defaultSelectAppCount = runningUserAppList.size();
+                mAccLockAppList = mAppInfoDataSource.getAccLockAppList();
+                for (AppInfo lock : mAccLockAppList) {
+                    for (int i=0;i<runningUserAppList.size();i++) {
+                        if(lock.getPackageName().equals(runningUserAppList.get(i).getPackageName())){
+                            runningUserAppList.get(i).setLock(true);
+                            runningUserAppList.get(i).setSeleced(false);
+                            defaultSelectAppCount--;
+                        }
+                    }
+                }
+
+                //初始化底部按钮
+                initBottomBtn(defaultSelectAppCount);
+                //更新列表
                 mAccView.upDateAppList(runningUserAppList, runningSysAppList);
 
                 //初始化应用数目头
                 mAccView.showCountTitle(list.size(), runningUserAppList.size(), runningSysAppList.size());
                 mAccView.initCountTitle();
 
-                //初始化数据
+                //初始化进度条数据
                 mTotleRAMSize = mPhoneStateDataSource.getTotleRAMSize();
                 mUsedRAMSize = mPhoneStateDataSource.getUsedRAMSize();
-                mAccLockAppList = mAppInfoDataSource.getAccLockAppList();
                 final int percent = (int) (1f * mUsedRAMSize / mTotleRAMSize * 100);
                 //TODO 如何在布局显示之后启动动画
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Log.e("haha", System.currentTimeMillis() + "");
-
                         mAccView.showResumeAnimation(percent);
                         mAccView.showMemorySize(mUsedRAMSize, mTotleRAMSize);
                         mAccView.showMemoryPercent(percent);
@@ -87,6 +105,20 @@ public class AccPresenter implements AccContract.Presenter {
             }
         });
 
+    }
+
+    private void initBottomBtn(int defaultSelectAppCount) {
+        if(defaultSelectAppCount==runningUserAppList.size()&& defaultSelectAppCount!=0){
+            mAccView.showSelectAllBtnEnable();
+        }else {
+            mAccView.showSelectAllBtnDisalbe();
+        }
+
+        if(defaultSelectAppCount==0){
+            mAccView.showEndBtnDisable();
+        }else {
+            mAccView.showEndBtnEnable(defaultSelectAppCount);
+        }
     }
 
     @Override
@@ -106,6 +138,9 @@ public class AccPresenter implements AccContract.Presenter {
 
     @Override
     public void selectAll() {
+        if(runningUserAppList==null){
+            return;
+        }
         int lockAppCount = 0;
         for (AppInfo info : runningUserAppList) {
             if(info.isLock()){
@@ -121,6 +156,9 @@ public class AccPresenter implements AccContract.Presenter {
 
     @Override
     public void cacelSelectAll() {
+        if(runningUserAppList==null){
+            return;
+        }
         for (AppInfo info : runningUserAppList) {
             info.setSeleced(false);
         }
@@ -133,6 +171,9 @@ public class AccPresenter implements AccContract.Presenter {
     public void killSelectedProcess() {
         int appCount = 0;
         long totalDirtyMem = 0;
+        if(runningUserAppList==null){
+            return;
+        }
         List<AppInfo> killProcessList = new ArrayList<>();
         for (AppInfo info : runningUserAppList) {
             if (info.isSeleced()) {
@@ -157,5 +198,10 @@ public class AccPresenter implements AccContract.Presenter {
 
         mAccView.showToastTotalClearMemory(appCount,totalDirtyMem);
         mAppInfoDataSource.killProcess(killProcessList);
+    }
+
+    @Override
+    public void selectLockApp(Context context) {
+        SelectLockAppActivity.startSelectLockAppActivity(context);
     }
 }

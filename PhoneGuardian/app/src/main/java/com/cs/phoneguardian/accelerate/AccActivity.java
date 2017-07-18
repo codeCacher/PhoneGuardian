@@ -113,6 +113,7 @@ public class AccActivity extends AppCompatActivity implements AccContract.View {
         mActiveAppAdapter = new ActiveAppAdapter(this, mPresenter);
         rvActiveApp.setAdapter(mActiveAppAdapter);
 
+        //设置底部按钮的点击事件
         rlEnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,6 +130,12 @@ public class AccActivity extends AppCompatActivity implements AccContract.View {
                     mSelectAll = true;
                     mPresenter.selectAll();
                 }
+            }
+        });
+        rlSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.selectLockApp(AccActivity.this);
             }
         });
     }

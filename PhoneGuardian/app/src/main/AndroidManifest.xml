@@ -23,6 +23,7 @@
         </activity>
         <activity android:name=".main.MainActivity" />
         <activity android:name=".accelerate.AccActivity" />
+        <activity android:name=".accelerate.SelectLockAppActivity" />
 
         <receiver android:name=".AdminReceiver"
             android:label="@string/device_admin"

@@ -17,6 +17,9 @@
 package com.cs.phoneguardian.accelerate;
 
 
+import android.content.Context;
+import android.widget.BaseAdapter;
+
 import com.cs.phoneguardian.BasePresenter;
 import com.cs.phoneguardian.BaseView;
 
@@ -47,6 +50,14 @@ public interface AccContract {
         void selectAll();
         void cacelSelectAll();
         void killSelectedProcess();
+        void selectLockApp(Context context);
     }
 
+    interface SettingView extends BaseView<SettingPreseter>{
+
+    }
+
+    interface SettingPreseter extends BasePresenter{
+
+    }
 }

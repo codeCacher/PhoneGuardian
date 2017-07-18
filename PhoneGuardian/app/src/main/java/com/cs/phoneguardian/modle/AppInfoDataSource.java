@@ -43,10 +43,6 @@ public class AppInfoDataSource implements BaseDataSource {
         }
     }
 
-    public interface OnGetAppListFinishedListener{
-        void onFinish(List<AppInfo> list);
-    }
-
     public static AppInfoDataSource getInstance(Context context) {
         return new AppInfoDataSource(context);
     }
@@ -120,7 +116,7 @@ public class AppInfoDataSource implements BaseDataSource {
     }
 
     /**
-     * 获取所用的系统应用
+     * 获取所有的系统应用
      * @return 系统应用列表
      */
     public List<AppInfo> getSysAppList(){
@@ -166,6 +162,10 @@ public class AppInfoDataSource implements BaseDataSource {
         return appInfo;
     }
 
+    /**
+     * 获取加速锁定应用列表
+     * @return 加速锁定应用列表
+     */
     public List<AppInfo> getAccLockAppList(){
         List<AppInfo> list = new ArrayList<>();
         Cursor cursor = mAppDB.query(AppInfoPersistenceContract.AppEntry.ACC_LOCK_TABLE_NAME,

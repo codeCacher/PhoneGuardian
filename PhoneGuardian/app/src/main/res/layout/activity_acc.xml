@@ -241,7 +241,7 @@
                 android:layout_height="25dp"
                 android:layout_centerHorizontal="true"
                 android:layout_margin="5dp"
-                android:src="@drawable/end_app" />
+                android:src="@drawable/end_app_highlight" />
 
             <TextView
                 android:id="@+id/tv_end"
@@ -250,7 +250,7 @@
                 android:layout_below="@+id/iv_end"
                 android:layout_centerHorizontal="true"
                 android:text="一键结束（0）"
-                android:textColor="@android:color/black"
+                android:textColor="@color/colorGrayBlack"
                 android:textSize="8sp" />
 
         </RelativeLayout>
