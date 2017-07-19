@@ -1,10 +1,7 @@
 package com.cs.phoneguardian.accelerate;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.ApplicationInfo;
 import android.os.Handler;
-import android.util.Log;
 
 import com.cs.phoneguardian.modle.AppInfoDataSource;
 import com.cs.phoneguardian.modle.PhoneStateDataSource;
@@ -70,8 +67,8 @@ public class AccPresenter implements AccContract.Presenter {
                 int defaultSelectAppCount = runningUserAppList.size();
                 mAccLockAppList = mAppInfoDataSource.getAccLockAppList();
                 for (AppInfo lock : mAccLockAppList) {
-                    for (int i=0;i<runningUserAppList.size();i++) {
-                        if(lock.getPackageName().equals(runningUserAppList.get(i).getPackageName())){
+                    for (int i = 0; i < runningUserAppList.size(); i++) {
+                        if (lock.getPackageName().equals(runningUserAppList.get(i).getPackageName())) {
                             runningUserAppList.get(i).setLock(true);
                             runningUserAppList.get(i).setSeleced(false);
                             defaultSelectAppCount--;
@@ -108,15 +105,15 @@ public class AccPresenter implements AccContract.Presenter {
     }
 
     private void initBottomBtn(int defaultSelectAppCount) {
-        if(defaultSelectAppCount==runningUserAppList.size()&& defaultSelectAppCount!=0){
+        if (defaultSelectAppCount == runningUserAppList.size() && defaultSelectAppCount != 0) {
             mAccView.showSelectAllBtnEnable();
-        }else {
+        } else {
             mAccView.showSelectAllBtnDisalbe();
         }
 
-        if(defaultSelectAppCount==0){
+        if (defaultSelectAppCount == 0) {
             mAccView.showEndBtnDisable();
-        }else {
+        } else {
             mAccView.showEndBtnEnable(defaultSelectAppCount);
         }
     }
@@ -138,25 +135,25 @@ public class AccPresenter implements AccContract.Presenter {
 
     @Override
     public void selectAll() {
-        if(runningUserAppList==null){
+        if (runningUserAppList == null) {
             return;
         }
         int lockAppCount = 0;
         for (AppInfo info : runningUserAppList) {
-            if(info.isLock()){
+            if (info.isLock()) {
                 lockAppCount++;
-            }else {
+            } else {
                 info.setSeleced(true);
             }
         }
         mAccView.showSelectAllBtnEnable();
-        mAccView.showEndBtnEnable(runningUserAppList.size()-lockAppCount);
-        mAccView.upDateAppList(runningUserAppList,runningSysAppList);
+        mAccView.showEndBtnEnable(runningUserAppList.size() - lockAppCount);
+        mAccView.upDateAppList(runningUserAppList, runningSysAppList);
     }
 
     @Override
     public void cacelSelectAll() {
-        if(runningUserAppList==null){
+        if (runningUserAppList == null) {
             return;
         }
         for (AppInfo info : runningUserAppList) {
@@ -164,14 +161,14 @@ public class AccPresenter implements AccContract.Presenter {
         }
         mAccView.showSelectAllBtnDisalbe();
         mAccView.showEndBtnDisable();
-        mAccView.upDateAppList(runningUserAppList,runningSysAppList);
+        mAccView.upDateAppList(runningUserAppList, runningSysAppList);
     }
 
     @Override
     public void killSelectedProcess() {
         int appCount = 0;
         long totalDirtyMem = 0;
-        if(runningUserAppList==null){
+        if (runningUserAppList == null) {
             return;
         }
         List<AppInfo> killProcessList = new ArrayList<>();
@@ -186,22 +183,44 @@ public class AccPresenter implements AccContract.Presenter {
             runningUserAppList.remove(info);
         }
 
-        mUsedRAMSize-=totalDirtyMem;
+        mUsedRAMSize -= totalDirtyMem;
         int percent = (int) (mUsedRAMSize * 100 / mTotleRAMSize);
-        mAccView.upDateAppList(runningUserAppList,runningSysAppList);
+        mAccView.upDateAppList(runningUserAppList, runningSysAppList);
         mAccView.showMemoryPercent(percent);
-        mAccView.showMemorySize(mUsedRAMSize,mTotleRAMSize);
+        mAccView.showMemorySize(mUsedRAMSize, mTotleRAMSize);
         mAccView.showState(percent);
 
         mAccView.showEndBtnDisable();
         mAccView.showSelectAllBtnDisalbe();
 
-        mAccView.showToastTotalClearMemory(appCount,totalDirtyMem);
+        mAccView.showToastTotalClearMemory(appCount, totalDirtyMem);
         mAppInfoDataSource.killProcess(killProcessList);
     }
 
     @Override
     public void selectLockApp(Context context) {
         SelectLockAppActivity.startSelectLockAppActivity(context);
+        mAccView.hideAppList();
+    }
+
+    @Override
+    public void resume() {
+        if (runningUserAppList == null) {
+            return;
+        }
+        //区分是否有加速锁
+        mAccLockAppList = mAppInfoDataSource.getAccLockAppList();
+
+        for (int i = 0; i < runningUserAppList.size(); i++) {
+            runningUserAppList.get(i).setLock(false);
+            for (AppInfo lock : mAccLockAppList) {
+                if (lock.getPackageName().equals(runningUserAppList.get(i).getPackageName())) {
+                    runningUserAppList.get(i).setLock(true);
+                }
+            }
+        }
+
+        //更新列表
+        mAccView.upDateAppList(runningUserAppList, runningSysAppList);
     }
 }

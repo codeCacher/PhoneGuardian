@@ -42,6 +42,7 @@ public interface AccContract {
         void showSelectAllBtnEnable();
         void showSelectAllBtnDisalbe();
         void showToastTotalClearMemory(int appCount,long memorySize);
+        void hideAppList();
         void initCountTitle();
     }
 
@@ -51,13 +52,18 @@ public interface AccContract {
         void cacelSelectAll();
         void killSelectedProcess();
         void selectLockApp(Context context);
+        void resume();
     }
 
     interface SettingView extends BaseView<SettingPreseter>{
-
+        void upDateAppList(List<AppInfo> userAppList);
+        void showLockAppCount(int count);
     }
 
     interface SettingPreseter extends BasePresenter{
-
+        void addLockApp(AppInfo info);
+        void removeLockApp(AppInfo info);
+        void selectAll();
+        void cancelAll();
     }
 }

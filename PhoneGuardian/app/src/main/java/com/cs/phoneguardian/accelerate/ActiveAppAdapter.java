@@ -14,7 +14,6 @@ import com.cs.phoneguardian.R;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -116,10 +115,15 @@ public class ActiveAppAdapter extends RecyclerView.Adapter {
                 userAppHolder.ivIcon.setImageDrawable(mUserAppList.get(position - 2).getIcon());
                 userAppHolder.tvName.setText(mUserAppList.get(position - 2).getName());
                 userAppHolder.tvMemSize.setText("内存：" + Formatter.formatFileSize(mContext, mUserAppList.get(position - 2).getMemSize()));
-                if(mUserAppList.get(position-2).isSeleced()){
+                if (mUserAppList.get(position - 2).isSeleced()) {
                     userAppHolder.ivCheckState.setImageResource(R.drawable.checkbox_checked);
-                }else {
+                } else {
                     userAppHolder.ivCheckState.setImageResource(R.drawable.checkbox_uncheck);
+                }
+                if (mUserAppList.get(position - 2).isLock()) {
+                    userAppHolder.ivLock.setVisibility(View.VISIBLE);
+                } else {
+                    userAppHolder.ivLock.setVisibility(View.INVISIBLE);
                 }
 
                 //设置点击事件
@@ -196,6 +200,8 @@ public class ActiveAppAdapter extends RecyclerView.Adapter {
         ImageView ivCheckState;
         @BindView(R.id.rl_root)
         RelativeLayout rlRoot;
+        @BindView(R.id.iv_lock)
+        ImageView ivLock;
 
         ActiveUserAppViewHolder(View itemView) {
             super(itemView);

@@ -138,12 +138,14 @@ public class AccActivity extends AppCompatActivity implements AccContract.View {
                 mPresenter.selectLockApp(AccActivity.this);
             }
         });
+
+        mPresenter.start();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mPresenter.start();
+        mPresenter.resume();
     }
 
     public static void startAccAcitvity(Context context) {
@@ -256,6 +258,11 @@ public class AccActivity extends AppCompatActivity implements AccContract.View {
     @Override
     public void showToastTotalClearMemory(int appCount, long memorySize) {
         Toast.makeText(this,"已结束"+appCount+"个应用，释放"+Formatter.formatFileSize(this,memorySize)+"内存",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void hideAppList() {
+        rvActiveApp.setVisibility(View.INVISIBLE);
     }
 
     //TODO 该逻辑比较复杂，可考虑简化

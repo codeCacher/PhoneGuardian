@@ -1,6 +1,7 @@
 package com.cs.phoneguardian.modle;
 
 import android.app.ActivityManager;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -205,5 +206,26 @@ public class AppInfoDataSource implements BaseDataSource {
         for (AppInfo info : list) {
             mActivityManager.killBackgroundProcesses(info.getPackageName());
         }
+    }
+
+    /**
+     * 向加速锁定数据库中加入一个App
+     * @param info App信息对象
+     * @return 插入的条目数
+     */
+    public long addAppToAccLockDB(AppInfo info){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(AppInfoPersistenceContract.AppEntry.PACKAGE_NAME,info.getPackageName());
+        return mAppDB.insert(AppInfoPersistenceContract.AppEntry.ACC_LOCK_TABLE_NAME, null, contentValues);
+    }
+
+    /**
+     * 从加速锁定数据库中移除一个App
+     * @param info App信息对象
+     * @return 删除的条目数
+     */
+    public int  removeAppFromAccLockDB(AppInfo info){
+        return mAppDB.delete(AppInfoPersistenceContract.AppEntry.ACC_LOCK_TABLE_NAME,
+                AppInfoPersistenceContract.AppEntry.PACKAGE_NAME + "= ?", new String[]{info.getPackageName()});
     }
 }
