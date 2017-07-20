@@ -1,6 +1,7 @@
 package com.cs.phoneguardian.view;
 
 import android.content.Context;
+import android.support.v4.view.NestedScrollingChild;
 import android.support.v4.view.NestedScrollingParent;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +17,7 @@ import com.cs.phoneguardian.utils.DisplayUtils;
 
 
 public class NestScrollLayout extends LinearLayout implements NestedScrollingParent {
-    private RecyclerView mChild;
+    private View mChild;
     private View mMask;
     private View mTopView;
 
@@ -24,6 +25,7 @@ public class NestScrollLayout extends LinearLayout implements NestedScrollingPar
 
     private int mMinTopHeight;
     private int mDefaultTopHeight;
+    private int mBottomHeight;
 
     private OnScrollListener mOnScrollListener;
 
@@ -36,6 +38,7 @@ public class NestScrollLayout extends LinearLayout implements NestedScrollingPar
         //设置默认值
         mMinTopHeight = DensityUtil.dp2px(context, 50);
         mDefaultTopHeight = DensityUtil.dp2px(context, 350);
+        mBottomHeight = DensityUtil.dp2px(context, 50);
     }
 
     @Override
@@ -75,7 +78,7 @@ public class NestScrollLayout extends LinearLayout implements NestedScrollingPar
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mChild = (RecyclerView) findViewById(R.id.child_id);
+        mChild = findViewById(R.id.child_id);
         mMask = findViewById(R.id.mask_id);
     }
 
@@ -86,7 +89,7 @@ public class NestScrollLayout extends LinearLayout implements NestedScrollingPar
         int statusBarHeight = displayUtils.getStatusBarHeight();
         int displayHeight = displayUtils.getDisplayHeight();
         ViewGroup.LayoutParams layoutParams = mChild.getLayoutParams();
-        layoutParams.height = displayHeight - statusBarHeight - mMinTopHeight;
+        layoutParams.height = displayHeight - statusBarHeight - mMinTopHeight - mBottomHeight;
         mChild.setLayoutParams(layoutParams);
         setMeasuredDimension(getMeasuredWidth(), mDefaultTopHeight + mChild.getLayoutParams().height);
     }
@@ -138,9 +141,10 @@ public class NestScrollLayout extends LinearLayout implements NestedScrollingPar
         this.mOnScrollListener = listener;
     }
 
-    public void init(int minTopHeight, int defaultTopHeight, View topView) {
+    public void init(int minTopHeight, int defaultTopHeight,int bottomHeight, View topView) {
         this.mMinTopHeight = minTopHeight;
         this.mDefaultTopHeight = defaultTopHeight;
+        this.mBottomHeight = bottomHeight;
         this.mTopView = topView;
     }
 }

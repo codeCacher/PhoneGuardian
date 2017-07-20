@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cs.phoneguardian.R;
+import com.cs.phoneguardian.utils.CustomActivityJumpUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,7 +115,7 @@ public class ActiveAppAdapter extends RecyclerView.Adapter {
                 final ActiveUserAppViewHolder userAppHolder = (ActiveUserAppViewHolder) holder;
                 userAppHolder.ivIcon.setImageDrawable(mUserAppList.get(position - 2).getIcon());
                 userAppHolder.tvName.setText(mUserAppList.get(position - 2).getName());
-                userAppHolder.tvMemSize.setText("内存：" + Formatter.formatFileSize(mContext, mUserAppList.get(position - 2).getMemSize()));
+                userAppHolder.tvMemSize.setText("内存：" + Formatter.formatFileSize(mContext, mUserAppList.get(position - 2).getDirtyMemSize()));
                 if (mUserAppList.get(position - 2).isSeleced()) {
                     userAppHolder.ivCheckState.setImageResource(R.drawable.checkbox_checked);
                 } else {
@@ -154,15 +155,17 @@ public class ActiveAppAdapter extends RecyclerView.Adapter {
 
             case TYPE_SYS_APP:
                 ActiveSysAppViewHolder sysAppHolder = (ActiveSysAppViewHolder) holder;
-                sysAppHolder.ivIcon.setImageDrawable(mSysAppList.get(position - 3 - mUserAppList.size()).getIcon());
-                sysAppHolder.tvName.setText(mSysAppList.get(position - 3 - mUserAppList.size()).getName());
-                sysAppHolder.tvMemSize.setText("内存：" + Formatter.formatFileSize(mContext, mSysAppList.get(position - 3 - mUserAppList.size()).getMemSize()));
+                final int itemPosition = position - 3 - mUserAppList.size();
+                sysAppHolder.ivIcon.setImageDrawable(mSysAppList.get(itemPosition).getIcon());
+                sysAppHolder.tvName.setText(mSysAppList.get(itemPosition).getName());
+                sysAppHolder.tvMemSize.setText("内存：" + Formatter.formatFileSize(mContext, mSysAppList.get(itemPosition).getDirtyMemSize()));
 
                 //设置点击事件
                 final int sysFinalPosition = position - 3 - mUserAppList.size();
                 sysAppHolder.rlRoot.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        CustomActivityJumpUtils.startAppInfoActivity(mContext,mSysAppList.get(itemPosition).getPackageName());
                         if (mOnItemClickedListener != null) {
                             mOnItemClickedListener.OnSysAppItemClicked(sysFinalPosition);
                         }

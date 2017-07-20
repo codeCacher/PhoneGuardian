@@ -4,16 +4,20 @@
     <declare-styleable name="RoundProgressBar">  
         <attr name="roundColor" format="color"/>
         <attr name="roundProgressColor" format="color"/>
+        <attr name="secondRoundProgressColor" format="color"/>
         <attr name="roundWidth" format="dimension"/>
         <attr name="radius" format="dimension"/>
         <attr name="max" format="integer"/>
         <attr name="progress" format="integer"/>
+        <attr name="secondProgress" format="integer"/>
         <attr name="intervalCount" format="integer"/>
         <attr name="startAngle" format="integer"/>
 
         <attr name="progressDotColor" format="color"/>
         <attr name="progressDotWidth" format="dimension"/>
         <attr name="progressDotVisible" format="boolean"/>
+        <attr name="secondProgressDotColor" format="color"/>
+        <attr name="secondProgressDotVisible" format="boolean"/>
 
         <attr name="style">
             <enum name="STROKE" value="0"/>

@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cs.phoneguardian.R;
+import com.cs.phoneguardian.clearcache.ClearCacheActivity;
 import com.cs.phoneguardian.modle.AppInfoDataSource;
 import com.cs.phoneguardian.modle.PhoneStateDataSource;
 import com.cs.phoneguardian.view.NestScrollLayout;
@@ -85,11 +86,15 @@ public class AccActivity extends AppCompatActivity implements AccContract.View {
     TextView tvSetting;
     @BindView(R.id.rl_setting)
     RelativeLayout rlSetting;
+    @BindView(R.id.rl_bottom)
+    RelativeLayout rlBottom;
 
     private AccContract.Presenter mPresenter;
     private ActiveAppAdapter mActiveAppAdapter;
     private int mMinMaskHeight;
     private int mDefaultMaskHeight;
+    private int mBottomHeight;
+
     private LinearLayoutManager mLinearLayoutManager;
     private int mDefaultCountTitleTop;
     private int mCountTitleHeight;
@@ -104,7 +109,8 @@ public class AccActivity extends AppCompatActivity implements AccContract.View {
 
         mMinMaskHeight = rlTitle.getLayoutParams().height;
         mDefaultMaskHeight = rlTop.getLayoutParams().height;
-        nsl.init(mMinMaskHeight, mDefaultMaskHeight, rlTop);
+        mBottomHeight = rlBottom.getLayoutParams().height;
+        nsl.init(mMinMaskHeight, mDefaultMaskHeight,mBottomHeight, rlTop);
 
         AccPresenter.getInstance(AppInfoDataSource.getInstance(this), PhoneStateDataSource.getInstance(this), this);
 
@@ -123,10 +129,10 @@ public class AccActivity extends AppCompatActivity implements AccContract.View {
         rlSelectAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mSelectAll){
-                    mSelectAll  =false;
+                if (mSelectAll) {
+                    mSelectAll = false;
                     mPresenter.cacelSelectAll();
-                }else {
+                } else {
                     mSelectAll = true;
                     mPresenter.selectAll();
                 }
@@ -181,7 +187,8 @@ public class AccActivity extends AppCompatActivity implements AccContract.View {
         });
         rvActiveApp.startAnimation(translateAnimation);
 
-        rpbPercent.swip(0, percent, 500, new RoundProgressBar.OnProgressChangeListener() {
+        int duration = this.getResources().getInteger(R.integer.defaultSwipDuration);
+        rpbPercent.swip(0,0, percent, duration, new RoundProgressBar.OnProgressChangeListener() {
             @Override
             public void OnProgressChange(int progress) {
                 tvPercent.setText(progress + "");
@@ -198,7 +205,8 @@ public class AccActivity extends AppCompatActivity implements AccContract.View {
 
     @Override
     public void showMemoryPercent(int percent) {
-        rpbPercent.swip(rpbPercent.getProgress(), percent, 500, new RoundProgressBar.OnProgressChangeListener() {
+        int duration = this.getResources().getInteger(R.integer.defaultSwipDuration);
+        rpbPercent.swip(0,rpbPercent.getProgress(), percent, duration, new RoundProgressBar.OnProgressChangeListener() {
             @Override
             public void OnProgressChange(int progress) {
                 tvPercent.setText(progress + "");
@@ -257,7 +265,7 @@ public class AccActivity extends AppCompatActivity implements AccContract.View {
 
     @Override
     public void showToastTotalClearMemory(int appCount, long memorySize) {
-        Toast.makeText(this,"已结束"+appCount+"个应用，释放"+Formatter.formatFileSize(this,memorySize)+"内存",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "已结束" + appCount + "个应用，释放" + Formatter.formatFileSize(this, memorySize) + "内存", Toast.LENGTH_SHORT).show();
     }
 
     @Override

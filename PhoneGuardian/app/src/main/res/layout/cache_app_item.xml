@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_root"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="@color/colorPrimary">
+
+    <RelativeLayout
+        android:layout_toStartOf="@+id/iv_detail"
+        android:layout_marginEnd="20dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:textSize="11sp"
+            android:textColor="@android:color/white"
+            android:text="应用名"
+            android:id="@+id/tv_name"
+            android:lines="1"
+            android:ellipsize="end"
+            android:layout_marginStart="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_below="@+id/tv_name"
+            android:textSize="11sp"
+            android:textColor="@android:color/white"
+            android:text="缓存：0KB"
+            android:id="@+id/tv_cache_size"
+            android:layout_marginStart="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/iv_detail"
+        android:src="@drawable/arrow_more_right"
+        android:layout_marginEnd="15dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:layout_width="15dp"
+        android:layout_height="15dp" />
+
+    <View
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorFogBlue"/>
+
+</RelativeLayout>

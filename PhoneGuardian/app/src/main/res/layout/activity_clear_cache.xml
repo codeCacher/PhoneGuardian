@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android_custom="http://schemas.android.com/apk/res/com.cs.phoneguardian"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_app"
+        android:layout_below="@+id/rl_top"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_top"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:background="@color/colorPrimary">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="35dp"
+            android:layout_marginEnd="35dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="80dp">
+
+            <TextView
+                android:id="@+id/tv_scan_state"
+                android:visibility="invisible"
+                android:gravity="center"
+                android:textSize="12sp"
+                android:text="正在扫描"
+                android:lines="1"
+                android:ellipsize="end"
+                android:textColor="@android:color/white"
+                android:layout_above="@+id/bt_scan"
+                android:layout_marginBottom="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:background="@drawable/cache_scan_btn_selector"
+                android:id="@+id/bt_scan"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="智能扫描"
+                android:layout_alignParentBottom="true"
+                android:textColor="@android:color/white"
+                android:textSize="12sp" />
+
+            <RelativeLayout
+                android:layout_width="130dp"
+                android:layout_height="match_parent">
+                <RelativeLayout
+                    android:id="@+id/rl_phone_percent"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp">
+
+                    <com.cs.phoneguardian.view.RoundProgressBar
+                        android:id="@+id/rpb_phone_percent"
+                        android:layout_width="130dp"
+                        android:layout_height="130dp"
+
+                        android_custom:max="100"
+                        android_custom:progress="0"
+                        android_custom:progressDotColor="@color/colorGreen"
+                        android_custom:progressDotVisible="true"
+                        android_custom:radius="65dp"
+                        android_custom:roundColor="@color/colorFogBlue"
+                        android_custom:roundProgressColor="@color/colorGreen"
+                        android_custom:roundWidth="8dp"
+                        android_custom:style="INTERVAL" />
+
+                    <ImageView
+                        android:src="@drawable/phone_white"
+                        android:layout_centerInParent="true"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tv_phone_percent"
+                    android:layout_marginTop="15dp"
+                    android:text="手机已用空间"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="12sp"
+                    android:textColor="@android:color/white"
+                    android:layout_below="@+id/rl_phone_percent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tv_phone_size"
+                    android:text="0GB/0GB"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="12sp"
+                    android:textColor="@android:color/white"
+                    android:layout_below="@+id/tv_phone_percent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_alignParentEnd="true"
+                android:layout_width="130dp"
+                android:layout_height="match_parent">
+                <RelativeLayout
+                    android:id="@+id/rl_sd_percent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp">
+
+                    <com.cs.phoneguardian.view.RoundProgressBar
+                        android:id="@+id/rpb_sd_percent"
+                        android:layout_width="130dp"
+                        android:layout_height="130dp"
+
+                        android_custom:max="100"
+                        android_custom:progress="0"
+                        android_custom:progressDotColor="@color/colorGreen"
+                        android_custom:progressDotVisible="true"
+                        android_custom:radius="65dp"
+                        android_custom:roundColor="@color/colorFogBlue"
+                        android_custom:roundProgressColor="@color/colorGreen"
+                        android_custom:roundWidth="8dp"
+                        android_custom:style="INTERVAL" />
+
+                    <ImageView
+                        android:src="@drawable/sd_white"
+                        android:layout_centerInParent="true"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp" />
+
+                </RelativeLayout>
+                <TextView
+                    android:id="@+id/tv_sd_percent"
+                    android:layout_marginTop="15dp"
+                    android:text="SD卡已用空间"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="12sp"
+                    android:textColor="@android:color/white"
+                    android:layout_below="@+id/rl_sd_percent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tv_sd_size"
+                    android:text="0GB/0GB"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="12sp"
+                    android:textColor="@android:color/white"
+                    android:layout_below="@+id/tv_sd_percent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <com.cs.phoneguardian.view.NestScrollLayout
+        android:id="@+id/nsl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".accelerate.AccActivity">
+
+        <View
+            android:id="@id/mask_id"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:alpha="0"
+            android:background="@android:color/black" />
+
+        <com.cs.phoneguardian.view.ScrollViewChild
+            android:id="@id/child_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+
+                    <TextView
+                        android:gravity="center"
+                        android:layout_marginStart="15dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentStart="true"
+                        android:textColor="@android:color/black"
+                        android:textSize="15sp"
+                        android:text="大文件清理"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
+
+                    <ImageView
+                        android:layout_marginEnd="15dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/arrow_more_right"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp" />
+
+                    <View
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/colorDecorationWhite"
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+
+                    <TextView
+                        android:gravity="center"
+                        android:layout_marginStart="15dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentStart="true"
+                        android:textColor="@android:color/black"
+                        android:textSize="15sp"
+                        android:text="不常用应用"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
+
+                    <ImageView
+                        android:layout_marginEnd="15dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/arrow_more_right"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp" />
+
+                    <View
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/colorDecorationWhite"
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+
+        </com.cs.phoneguardian.view.ScrollViewChild>
+
+    </com.cs.phoneguardian.view.NestScrollLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="空间清理"
+            android:textColor="@android:color/white"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorFogWhite">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/colorDecorationWhite" />
+
+        <RelativeLayout
+            android:id="@+id/rl_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/iv_setting"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="5dp"
+                android:src="@drawable/setting_black" />
+
+            <TextView
+                android:id="@+id/tv_setting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_setting"
+                android:layout_centerHorizontal="true"
+                android:text="设置"
+                android:textColor="@android:color/black"
+                android:textSize="8sp" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>
+
+

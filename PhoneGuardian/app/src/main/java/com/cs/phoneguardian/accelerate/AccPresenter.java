@@ -175,7 +175,7 @@ public class AccPresenter implements AccContract.Presenter {
         for (AppInfo info : runningUserAppList) {
             if (info.isSeleced()) {
                 appCount++;
-                totalDirtyMem += info.getMemSize();
+                totalDirtyMem += info.getDirtyMemSize();
                 killProcessList.add(info);
             }
         }
@@ -186,6 +186,7 @@ public class AccPresenter implements AccContract.Presenter {
         mUsedRAMSize -= totalDirtyMem;
         int percent = (int) (mUsedRAMSize * 100 / mTotleRAMSize);
         mAccView.upDateAppList(runningUserAppList, runningSysAppList);
+        mAccView.showCountTitle(runningUserAppList.size()+runningSysAppList.size(),runningUserAppList.size(),runningSysAppList.size());
         mAccView.showMemoryPercent(percent);
         mAccView.showMemorySize(mUsedRAMSize, mTotleRAMSize);
         mAccView.showState(percent);

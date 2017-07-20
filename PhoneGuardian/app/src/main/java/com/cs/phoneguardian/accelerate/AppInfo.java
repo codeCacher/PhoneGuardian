@@ -5,12 +5,14 @@ import android.graphics.drawable.Drawable;
 /**
  * Created by SEELE on 2017/7/13.
  */
-
 public class AppInfo {
     private String name;
     private String packageName;
     private Drawable icon;
-    private long memSize;
+    private long dirtyMemSize;
+    private long cacheSize;
+    private long externalCacheSize;
+    private long totalCacheSize;
     private boolean isSystem;
     private boolean isSeleced;
     private boolean isLock;
@@ -39,12 +41,12 @@ public class AppInfo {
         this.icon = icon;
     }
 
-    public long getMemSize() {
-        return memSize;
+    public long getDirtyMemSize() {
+        return dirtyMemSize;
     }
 
-    public void setMemSize(long memSize) {
-        this.memSize = memSize;
+    public void setDirtyMemSize(long dirtyMemSize) {
+        this.dirtyMemSize = dirtyMemSize;
     }
 
     public boolean isSeleced() {
@@ -69,5 +71,29 @@ public class AppInfo {
 
     public void setSystem(boolean system) {
         isSystem = system;
+    }
+
+    public long getCacheSize() {
+        return cacheSize;
+    }
+
+    public void setCacheSize(long cacheSize) {
+        this.cacheSize = cacheSize;
+    }
+
+    public long getExternalCacheSize() {
+        return externalCacheSize;
+    }
+
+    public void setExternalCacheSize(long externalCacheSize) {
+        this.externalCacheSize = externalCacheSize;
+    }
+
+    public long getTotalCacheSize() {
+        return totalCacheSize;
+    }
+
+    public void setTotalCacheSize(long totalCacheSize) {
+        this.totalCacheSize = totalCacheSize;
     }
 }

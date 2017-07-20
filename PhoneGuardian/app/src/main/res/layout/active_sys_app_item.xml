@@ -44,7 +44,7 @@
         <ImageView
             android:layout_centerVertical="true"
             android:id="@+id/iv_detail"
-            android:src="@drawable/right_detail"
+            android:src="@drawable/arrow_more_right"
             android:layout_marginEnd="15dp"
             android:layout_alignParentEnd="true"
             android:layout_width="25dp"

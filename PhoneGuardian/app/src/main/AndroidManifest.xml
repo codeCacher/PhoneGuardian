@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.GET_PACKAGE_SIZE"/>
+    <uses-permission android:name="android.permission.CLEAR_APP_CACHE"/>
 
     <application
         android:allowBackup="true"
@@ -24,6 +26,7 @@
         <activity android:name=".main.MainActivity" />
         <activity android:name=".accelerate.AccActivity" />
         <activity android:name=".accelerate.SelectLockAppActivity" />
+        <activity android:name=".clearcache.ClearCacheActivity" />
 
         <receiver android:name=".AdminReceiver"
             android:label="@string/device_admin"

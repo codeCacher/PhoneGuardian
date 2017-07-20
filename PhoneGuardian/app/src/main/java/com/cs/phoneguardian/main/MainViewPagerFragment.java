@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.cs.phoneguardian.R;
 import com.cs.phoneguardian.accelerate.AccActivity;
+import com.cs.phoneguardian.clearcache.ClearCacheActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -73,13 +74,11 @@ public class MainViewPagerFragment extends Fragment implements FunctionItemAdapt
     public void OnClicke(int position) {
         switch (position){
             case 0:
-                Toast.makeText(getContext(),position+"",Toast.LENGTH_SHORT).show();
                 AccActivity.startAccAcitvity(getContext());
                 break;
 
             case 1:
-                Toast.makeText(getContext(),position+"",Toast.LENGTH_SHORT).show();
-
+                ClearCacheActivity.startClearCacheActivity(getContext());
                 break;
 
             case 2:

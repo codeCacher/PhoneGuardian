@@ -4,14 +4,19 @@ import android.app.ActivityManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.IPackageDataObserver;
+import android.content.pm.IPackageStatsObserver;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageStats;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Debug;
+import android.os.RemoteException;
 
 import com.cs.phoneguardian.R;
 import com.cs.phoneguardian.accelerate.AppInfo;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -73,7 +78,7 @@ public class AppInfoDataSource implements BaseDataSource {
                     //占用内存大小
                     Debug.MemoryInfo[] processMemoryInfo = mActivityManager.getProcessMemoryInfo(new int[]{processInfo.pid});
                     Debug.MemoryInfo memoryInfo = processMemoryInfo[0];
-                    appInfo.setMemSize(memoryInfo.getTotalPrivateDirty() * 1024);
+                    appInfo.setDirtyMemSize(memoryInfo.getTotalPrivateDirty() * 1024);
 
                     appInfoMap.put(appInfo.getName(), appInfo);
                     appInfoList.add(appInfo);
@@ -227,5 +232,57 @@ public class AppInfoDataSource implements BaseDataSource {
     public int  removeAppFromAccLockDB(AppInfo info){
         return mAppDB.delete(AppInfoPersistenceContract.AppEntry.ACC_LOCK_TABLE_NAME,
                 AppInfoPersistenceContract.AppEntry.PACKAGE_NAME + "= ?", new String[]{info.getPackageName()});
+    }
+
+    /**
+     * 通过包名获取缓存大小
+     * @param info 应用信息对象，获取的缓存大小将被保存到该对象中
+     */
+    public void getCacheSize(final AppInfo info){
+         IPackageStatsObserver.Stub mStatsObserver = new IPackageStatsObserver.Stub(){
+             @Override
+             public void onGetStatsCompleted(PackageStats pStats, boolean succeeded) throws RemoteException {
+                 long cacheSize = pStats.cacheSize;
+                 long externalCacheSize = pStats.externalCacheSize;
+                 long totalCacheSize = cacheSize + externalCacheSize;
+                 info.setCacheSize(cacheSize);
+                 info.setExternalCacheSize(externalCacheSize);
+                 info.setTotalCacheSize(totalCacheSize);
+             }
+         };
+
+        try {
+            Class<?> clazz = Class.forName("android.content.pm.PackageManager");
+            Method method = clazz.getMethod("getPackageSizeInfo", String.class, IPackageStatsObserver.class);
+            method.invoke(mPackageManager,info.getPackageName(),mStatsObserver);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public interface OnClearCacheCompleteListener{
+        void OnComplete();
+    }
+
+    /**
+     * 清空内部缓存
+     * @param listener 清空完成后的回调函数
+     */
+    public void clearAllInternalCache(final OnClearCacheCompleteListener listener){
+        IPackageDataObserver.Stub mDataObserver = new IPackageDataObserver.Stub() {
+            @Override
+            public void onRemoveCompleted(String packageName, boolean succeeded) throws RemoteException {
+                if(listener!=null){
+                    listener.OnComplete();
+                }
+            }
+        };
+        try {
+            Class<?> clazz = Class.forName("android.content.pm.PackageManager");
+            Method method = clazz.getMethod("freeStorageAndNotify", long.class, IPackageDataObserver.class);
+            method.invoke(mPackageManager,Long.MAX_VALUE,mDataObserver);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
