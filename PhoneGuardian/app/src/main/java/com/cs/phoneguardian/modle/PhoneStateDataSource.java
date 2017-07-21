@@ -4,6 +4,8 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.os.Environment;
 import android.os.StatFs;
+import android.telecom.TelecomManager;
+import android.telephony.TelephonyManager;
 
 import java.io.File;
 
@@ -13,11 +15,13 @@ import java.io.File;
 
 public class PhoneStateDataSource implements BaseDataSource {
 
+    private Context mContext;
     private ActivityManager mActivityManager;
     private ActivityManager.MemoryInfo mMemoryInfo;
 
     private PhoneStateDataSource(Context context) {
         if(mActivityManager==null){
+            this.mContext = context;
             mActivityManager=(ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
             mMemoryInfo = new ActivityManager.MemoryInfo();
             mActivityManager.getMemoryInfo(mMemoryInfo);
@@ -134,5 +138,10 @@ public class PhoneStateDataSource implements BaseDataSource {
     public boolean isExternalStorageAvailable() {
         return Environment.getExternalStorageState().equals(
                 Environment.MEDIA_MOUNTED);
+    }
+
+    public String getSimSerialNumber(){
+        TelephonyManager telephonyManager = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
+        return telephonyManager.getSimSerialNumber();
     }
 }

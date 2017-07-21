@@ -268,8 +268,8 @@ public class ClearCacheActivity extends AppCompatActivity implements ClearCacheC
         rpbSdPercent.setProgressDotVisible(true);
 
         int duration = ClearCacheActivity.this.getResources().getInteger(R.integer.defaultSwipDuration);
-        rpbPhonePercent.turn(duration, 0xFFFFFFFF);
-        rpbSdPercent.turn(duration, 0xFFFFFFFF);
+        rpbPhonePercent.turn(duration, Color.WHITE);
+        rpbSdPercent.turn(duration, Color.WHITE);
 
         nsl.setVisibility(View.GONE);
         rlBottom.setVisibility(View.GONE);
@@ -337,11 +337,7 @@ public class ClearCacheActivity extends AppCompatActivity implements ClearCacheC
     }
 
     @Override
-    public void showFinishClean(long allCacheSize) {
-        int oldPhonePercent = rpbPhonePercent.getProgress();
-        final int newPhonePercent = rpbPhonePercent.getSecondProgress();
-        int oldSDPercent = rpbSdPercent.getProgress();
-        final int newSDPercent = rpbSdPercent.getSecondProgress();
+    public void showFinishClean(long allCacheSize, int oldPhonePercent, final int newPhonePercent, int oldSDPercent, final int newSDPercent) {
         int duration = ClearCacheActivity.this.getResources().getInteger(R.integer.defaultSwipDuration);
         rpbPhonePercent.swip(0, oldPhonePercent, newPhonePercent, duration, new RoundProgressBar.OnProgressChangeListener() {
             @Override

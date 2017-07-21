@@ -43,7 +43,7 @@ public interface ClearCacheContract {
         void updateScanState(String packageName);
         void showScanFinishState(long gabbageSize,int oldPhonePercent,int newPhonePercent,int oldSDPercent,int newSDPercent);
         void updateAppList(List<AppInfo> appInfo);
-        void showFinishClean(long allCacheSize);
+        void showFinishClean(long allCacheSize,int oldPhonePercent,int newPhonePercent,int oldSDPercent,int newSDPercent);
     }
 
     interface Presenter extends BasePresenter {

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.text.format.Formatter;
 
 import com.cs.phoneguardian.accelerate.AppInfo;
 import com.cs.phoneguardian.modle.AppInfoDataSource;
@@ -33,6 +32,8 @@ public class ClearCachePresenter implements ClearCacheContract.Presenter {
     private long totleSDMemSize;
     private long usedSDMemSize;
     private boolean mStartScan;
+    private int mOldPhonePercent;
+    private int mOldSDPercent;
 
     private ClearCachePresenter(Context context, AppInfoDataSource appInfoDataSource, PhoneStateDataSource phoneStateDataSource, ClearCacheContract.View clearCacheView) {
         this.mContext = context;
@@ -43,9 +44,10 @@ public class ClearCachePresenter implements ClearCacheContract.Presenter {
         mClearCacheView.setPresenter(this);
     }
 
-    static ClearCachePresenter getInstance(Context context,AppInfoDataSource appInfoDataSource, PhoneStateDataSource phoneStateDataSource,ClearCacheContract.View clearCacheView) {
-        return new ClearCachePresenter(context,appInfoDataSource, phoneStateDataSource, clearCacheView);
+    static ClearCachePresenter getInstance(Context context, AppInfoDataSource appInfoDataSource, PhoneStateDataSource phoneStateDataSource, ClearCacheContract.View clearCacheView) {
+        return new ClearCachePresenter(context, appInfoDataSource, phoneStateDataSource, clearCacheView);
     }
+
     @Override
     public void start() {
         //初始化界面
@@ -63,7 +65,7 @@ public class ClearCachePresenter implements ClearCacheContract.Presenter {
 
         mPhonePercent = (int) (1f * usedPhoneMemSize / totlePhoneMemSize * 100);
         mSdPercent = (int) (1f * usedSDMemSize / totleSDMemSize * 100);
-        mClearCacheView.initRoundProgressColor(0,mPhonePercent, mSdPercent);
+        mClearCacheView.initRoundProgressColor(0, mPhonePercent, mSdPercent);
         //TODO 如何在布局显示之后启动动画
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -86,8 +88,8 @@ public class ClearCachePresenter implements ClearCacheContract.Presenter {
                 //获取应用列表
                 mInstalledAppList = mAppInfoDataSource.getInstalledAppList();
                 //扫描应用列表，并更新扫描状态
-                for (int i=0;i<mInstalledAppList.size();i++) {
-                    if(!mStartScan){
+                for (int i = 0; i < mInstalledAppList.size(); i++) {
+                    if (!mStartScan) {
                         return;
                     }
                     final AppInfo info = mInstalledAppList.get(i);
@@ -104,10 +106,10 @@ public class ClearCachePresenter implements ClearCacheContract.Presenter {
                 mAllPhoneCacheSize = 0;
                 mHaveCacheAppList = new ArrayList<>();
                 for (AppInfo info : mInstalledAppList) {
-                    if(!mStartScan){
+                    if (!mStartScan) {
                         return;
                     }
-                    if(info.getCacheSize()>0){
+                    if (info.getCacheSize() > 0) {
                         mAllPhoneCacheSize += info.getCacheSize();
                         mHaveCacheAppList.add(info);
                     }
@@ -127,15 +129,15 @@ public class ClearCachePresenter implements ClearCacheContract.Presenter {
 
     @Override
     public void completeScan() {
-        int oldPhonePercent = this.mPhonePercent;
-        int oldSDPercent = this.mSdPercent;
-        mPhonePercent = (int) (1f * (usedPhoneMemSize-mAllPhoneCacheSize) / totlePhoneMemSize * 100);
+        mOldPhonePercent = this.mPhonePercent;
+        mOldSDPercent = this.mSdPercent;
+        mPhonePercent = (int) (1f * (usedPhoneMemSize - mAllPhoneCacheSize) / totlePhoneMemSize * 100);
         mSdPercent = (int) (1f * usedSDMemSize / totleSDMemSize * 100);
 
-        if(mPhonePercent==oldPhonePercent){
-            oldPhonePercent++;
+        if (mPhonePercent == mOldPhonePercent) {
+            mOldPhonePercent++;
         }
-        mClearCacheView.showScanFinishState(mAllPhoneCacheSize,oldPhonePercent,mPhonePercent,oldSDPercent,mSdPercent);
+        mClearCacheView.showScanFinishState(mAllPhoneCacheSize, mOldPhonePercent, mPhonePercent, mOldSDPercent, mSdPercent);
         mClearCacheView.updateAppList(mHaveCacheAppList);
     }
 
@@ -147,7 +149,7 @@ public class ClearCachePresenter implements ClearCacheContract.Presenter {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mClearCacheView.showFinishClean(mAllPhoneCacheSize);
+                        mClearCacheView.showFinishClean(mAllPhoneCacheSize,mOldPhonePercent,mPhonePercent,mOldSDPercent,mSdPercent);
                         mHaveCacheAppList.clear();
                         mClearCacheView.updateAppList(mHaveCacheAppList);
                     }

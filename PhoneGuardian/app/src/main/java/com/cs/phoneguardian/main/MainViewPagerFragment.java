@@ -1,6 +1,5 @@
 package com.cs.phoneguardian.main;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +13,7 @@ import android.widget.Toast;
 import com.cs.phoneguardian.R;
 import com.cs.phoneguardian.accelerate.AccActivity;
 import com.cs.phoneguardian.clearcache.ClearCacheActivity;
+import com.cs.phoneguardian.guardian.activity.GuardActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -82,8 +82,7 @@ public class MainViewPagerFragment extends Fragment implements FunctionItemAdapt
                 break;
 
             case 2:
-                Toast.makeText(getContext(),position+"",Toast.LENGTH_SHORT).show();
-
+                GuardActivity.startGuardAcitvity(getContext());
                 break;
 
             case 3:

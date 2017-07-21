@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="功能说明"
+            android:textColor="@android:color/white"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+
+    <View
+        android:background="@color/colorDecorationWhite"
+        android:layout_width="match_parent"
+        android:layout_height="1px"/>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <ImageView
+            android:id="@+id/iv_0"
+            android:layout_marginStart="15dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/blue_finger"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+
+        <TextView
+            android:textSize="15sp"
+            android:textColor="@color/colorGrayBlack"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="15dp"
+            android:text="GPS追踪：#*location*#"
+            android:layout_toEndOf="@+id/iv_0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <View
+        android:background="@color/colorDecorationWhite"
+        android:layout_width="match_parent"
+        android:layout_height="1px"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <ImageView
+            android:id="@+id/iv_1"
+            android:layout_marginStart="15dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/blue_finger"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+
+        <TextView
+            android:textSize="15sp"
+            android:textColor="@color/colorGrayBlack"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="15dp"
+            android:text="播放报警音乐：#*alarm*#"
+            android:layout_toEndOf="@+id/iv_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <View
+        android:background="@color/colorDecorationWhite"
+        android:layout_width="match_parent"
+        android:layout_height="1px"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <ImageView
+            android:id="@+id/iv_2"
+            android:layout_marginStart="15dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/blue_finger"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+
+        <TextView
+            android:textSize="15sp"
+            android:textColor="@color/colorGrayBlack"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="15dp"
+            android:text="数据销毁：#*wipedata*#"
+            android:layout_toEndOf="@+id/iv_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <View
+        android:background="@color/colorDecorationWhite"
+        android:layout_width="match_parent"
+        android:layout_height="1px"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <ImageView
+            android:id="@+id/iv_3"
+            android:layout_marginStart="15dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/blue_finger"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+
+        <TextView
+            android:textSize="15sp"
+            android:textColor="@color/colorGrayBlack"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="15dp"
+            android:text="远程锁屏：#*lockscreen*#"
+            android:layout_toEndOf="@+id/iv_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <View
+        android:background="@color/colorDecorationWhite"
+        android:layout_width="match_parent"
+        android:layout_height="1px"/>
+
+</LinearLayout>

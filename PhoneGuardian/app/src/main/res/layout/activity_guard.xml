@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
+
+    <RelativeLayout
+        android:id="@+id/rl_top"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:background="@color/colorPrimary">
+
+        <ImageView
+            android:id="@+id/iv_logo"
+            android:layout_centerInParent="true"
+            android:src="@drawable/icon"
+            android:layout_width="200dp"
+            android:layout_height="200dp" />
+
+        <TextView
+            android:id="@+id/tv_state"
+            android:textSize="15sp"
+            android:textColor="@android:color/white"
+            android:text="手机防盗未开启"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/iv_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <com.cs.phoneguardian.view.NestScrollLayout
+        android:id="@+id/nsl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".accelerate.AccActivity">
+
+        <View
+            android:id="@id/mask_id"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:alpha="0"
+            android:background="@android:color/black" />
+
+        <com.cs.phoneguardian.view.ScrollViewChild
+            android:id="@id/child_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RelativeLayout
+                    android:id="@+id/rl_explarin"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+
+                    <TextView
+                        android:gravity="center"
+                        android:layout_marginStart="15dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentStart="true"
+                        android:textColor="@android:color/black"
+                        android:textSize="15sp"
+                        android:text="使用说明"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
+
+                    <ImageView
+                        android:layout_marginEnd="15dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/arrow_more_right"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp" />
+
+                    <View
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/colorDecorationWhite"
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_set_nav"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+
+                    <TextView
+                        android:gravity="center"
+                        android:layout_marginStart="15dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentStart="true"
+                        android:textColor="@android:color/black"
+                        android:textSize="15sp"
+                        android:text="设置导航"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
+
+                    <ImageView
+                        android:layout_marginEnd="15dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/arrow_more_right"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp" />
+
+                    <View
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/colorDecorationWhite"
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </com.cs.phoneguardian.view.ScrollViewChild>
+
+    </com.cs.phoneguardian.view.NestScrollLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="手机防盗"
+            android:textColor="@android:color/white"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorFogWhite">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/colorDecorationWhite" />
+
+        <RelativeLayout
+            android:id="@+id/rl_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/iv_setting"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="5dp"
+                android:src="@drawable/setting_black" />
+
+            <TextView
+                android:id="@+id/tv_setting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_setting"
+                android:layout_centerHorizontal="true"
+                android:text="设置"
+                android:textColor="@android:color/black"
+                android:textSize="8sp" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>
+
+

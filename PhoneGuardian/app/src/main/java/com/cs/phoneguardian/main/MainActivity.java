@@ -89,8 +89,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initViewPager() {
-        String[] nameList0 = new String[]{"加速优化", "空间清理", "骚扰拦截", "省电管理", "流量管理", "通知中心"};
-        Integer[] pictureIdList0 = new Integer[]{R.drawable.accelerate, R.drawable.clean, R.drawable.accelerate,
+        String[] nameList0 = new String[]{"加速优化", "空间清理", "手机防盗", "省电管理", "流量管理", "通知中心"};
+        Integer[] pictureIdList0 = new Integer[]{R.drawable.accelerate, R.drawable.clean, R.drawable.lock_white,
                 R.drawable.accelerate, R.drawable.accelerate, R.drawable.accelerate};
         String[] nameList1 = new String[]{"加速优化", "空间清理", "骚扰拦截", "省电管理", "流量管理", "通知中心"};
         Integer[] pictureIdList1 = new Integer[]{R.drawable.accelerate, R.drawable.clean, R.drawable.accelerate,
@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void initProgressBar() {
-        int preCheckScore = SharedPreferencesUtils.getInt(this, Constants.CHECK_RESULT, -1);
+        int preCheckScore = SharedPreferencesUtils.getInt(this, Constants.KEY_CHECK_RESULT, -1);
         int maxProgress = preCheckScore;
         if (preCheckScore < 0) {
             maxProgress = 100;
@@ -164,12 +164,12 @@ public class MainActivity extends AppCompatActivity {
     private void setIndacator(int position) {
         switch (position) {
             case 0:
-                ivDotLeft.setImageResource(R.drawable.dot_white);
-                ivDotRight.setImageResource(R.drawable.dot_fog_blue);
-                break;
-            case 1:
                 ivDotLeft.setImageResource(R.drawable.dot_fog_blue);
                 ivDotRight.setImageResource(R.drawable.dot_white);
+                break;
+            case 1:
+                ivDotLeft.setImageResource(R.drawable.dot_white);
+                ivDotRight.setImageResource(R.drawable.dot_fog_blue);
                 break;
         }
     }

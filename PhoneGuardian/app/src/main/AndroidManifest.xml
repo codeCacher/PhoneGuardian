@@ -7,6 +7,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.GET_PACKAGE_SIZE"/>
     <uses-permission android:name="android.permission.CLEAR_APP_CACHE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
 
     <application
         android:allowBackup="true"
@@ -27,6 +29,11 @@
         <activity android:name=".accelerate.AccActivity" />
         <activity android:name=".accelerate.SelectLockAppActivity" />
         <activity android:name=".clearcache.ClearCacheActivity" />
+        <activity android:name=".guardian.activity.GuardActivity" />
+        <activity android:name=".guardian.activity.GuardExplainActivity" />
+        <activity android:name=".guardian.activity.SettingNavActivity"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".guardian.activity.SettingActivity" />
 
         <receiver android:name=".AdminReceiver"
             android:label="@string/device_admin"

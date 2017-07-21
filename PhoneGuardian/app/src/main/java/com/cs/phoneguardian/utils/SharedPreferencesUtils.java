@@ -12,6 +12,20 @@ public class SharedPreferencesUtils {
     private static SharedPreferences sp;
 
     /**
+     * 根据键值从sp中移除一项
+     * @param context 上下文
+     * @param key 键值
+     */
+    public static void remove(Context context, String key) {
+        if (sp == null) {
+            sp = context.getSharedPreferences(Constants.SP_FILE_NAME, Context.MODE_PRIVATE);
+        }
+        SharedPreferences.Editor editor = sp.edit();
+        editor.remove(key);
+        editor.apply();
+    }
+
+    /**
      * put a string into the SharedPreferences file
      * @param context Context
      * @param key Key
@@ -67,5 +81,35 @@ public class SharedPreferencesUtils {
             sp = context.getSharedPreferences(Constants.SP_FILE_NAME, Context.MODE_PRIVATE);
         }
         return sp.getInt(key, defaultValue);
+    }
+
+
+    /**
+     * 将一个boolean值放入sp中
+     * @param context 上下文
+     * @param key 键值
+     * @param value boolean值
+     */
+    public static void putBoolean(Context context, String key, boolean value) {
+        if (sp == null) {
+            sp = context.getSharedPreferences(Constants.SP_FILE_NAME, Context.MODE_PRIVATE);
+        }
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean(key, value);
+        editor.apply();
+    }
+
+    /**
+     * 根据键值从sp中获取boolean值
+     * @param context 上下文
+     * @param key 键值
+     * @param defaultValue 若根据键值没有找到对应的boolean值，则返回默认值
+     * @return
+     */
+    public static boolean getBoolean(Context context, String key, boolean defaultValue) {
+        if (sp == null) {
+            sp = context.getSharedPreferences(Constants.SP_FILE_NAME, Context.MODE_PRIVATE);
+        }
+        return sp.getBoolean(key, defaultValue);
     }
 }
