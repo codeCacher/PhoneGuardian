@@ -25,14 +25,18 @@ import com.cs.phoneguardian.utils.SharedPreferencesUtils;
 
 public class LocationService extends Service {
 
+    private LocationManager mLocationManager;
+    private String mBestProvider;
+    private LocationListener mLocationListener;
+
     @Override
     public void onCreate() {
         super.onCreate();
-        LocationManager locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+        mLocationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
         criteria.setCostAllowed(true);
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
-        String bestProvider = locationManager.getBestProvider(criteria, true);
+        mBestProvider = mLocationManager.getBestProvider(criteria, true);
 
         //权限检测
         if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -45,22 +49,29 @@ public class LocationService extends Service {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        locationManager.requestLocationUpdates(bestProvider, 60000, 0, new LocationListener() {
+        mLocationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 double latitude = location.getLatitude();
                 double longitude = location.getLongitude();
                 String mergencyContactNumber = SharedPreferencesUtils.getString(getApplicationContext(), Constants.KEY_MERGENCY_CONTACT, "");
                 SmsManager smsManager = SmsManager.getDefault();
-                smsManager.sendTextMessage(mergencyContactNumber, null, "latitude:"+latitude+"  longitude:"+longitude, null, null);
+                smsManager.sendTextMessage(mergencyContactNumber, null, "latitude:" + latitude + "  longitude:" + longitude, null, null);
             }
+
             @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {}
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+            }
+
             @Override
-            public void onProviderEnabled(String provider) {}
+            public void onProviderEnabled(String provider) {
+            }
+
             @Override
-            public void onProviderDisabled(String provider) {}
-        });
+            public void onProviderDisabled(String provider) {
+            }
+        };
+        mLocationManager.requestLocationUpdates(mBestProvider, 60000, 0,mLocationListener);
     }
 
     @Nullable
