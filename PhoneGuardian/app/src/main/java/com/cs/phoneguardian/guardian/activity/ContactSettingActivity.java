@@ -1,23 +1,20 @@
-package com.cs.phoneguardian.guardian.fragment;
+package com.cs.phoneguardian.guardian.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cs.phoneguardian.R;
 import com.cs.phoneguardian.bean.Contact;
-import com.cs.phoneguardian.guardian.activity.ContactActivity;
-import com.cs.phoneguardian.guardian.activity.SettingNavActivity;
 import com.cs.phoneguardian.utils.Constants;
 import com.cs.phoneguardian.utils.SharedPreferencesUtils;
 
@@ -28,7 +25,9 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2017/7/21.
  */
 
-public class MergencyContactSettingFragment extends Fragment implements View.OnClickListener {
+public class ContactSettingActivity extends AppCompatActivity implements View.OnClickListener{
+    @BindView(R.id.rl_title)
+    RelativeLayout rlTitle;
     @BindView(R.id.et_phone)
     EditText etPhone;
     @BindView(R.id.iv_contact)
@@ -38,17 +37,14 @@ public class MergencyContactSettingFragment extends Fragment implements View.OnC
     @BindView(R.id.tv_yes)
     TextView tvYes;
 
-    private SettingNavActivity mParentActivity;
-
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_mergency_contact_setting, container, false);
-        ButterKnife.bind(this, view);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_contact_setting);
 
-        mParentActivity = (SettingNavActivity) getActivity();
+        ButterKnife.bind(this);
 
-        String setedPhone = SharedPreferencesUtils.getString(getContext(), Constants.KEY_MERGENCY_CONTACT, "");
+        String setedPhone = SharedPreferencesUtils.getString(this, Constants.KEY_MERGENCY_CONTACT, "");
         if(!TextUtils.isEmpty(setedPhone)){
             etPhone.setText(setedPhone);
         }
@@ -56,8 +52,11 @@ public class MergencyContactSettingFragment extends Fragment implements View.OnC
         ivContact.setOnClickListener(this);
         tvNo.setOnClickListener(this);
         tvYes.setOnClickListener(this);
+    }
 
-        return view;
+    public static void startContactSettingActivity(Context context) {
+        Intent intent = new Intent(context, ContactSettingActivity.class);
+        context.startActivity(intent);
     }
 
     @Override
@@ -73,21 +72,21 @@ public class MergencyContactSettingFragment extends Fragment implements View.OnC
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.iv_contact:
-                ContactActivity.fragmentStartContactActivityForResult(getContext(),this,0);
+                ContactActivity.startContactActivityForResult(ContactSettingActivity.this,this,0);
                 break;
 
             case R.id.tv_yes:
                 String phone = etPhone.getText().toString();
                 if(TextUtils.isEmpty(phone)){
-                    Toast.makeText(getContext(), "请输入紧急联系人号码", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ContactSettingActivity.this, "请输入紧急联系人号码", Toast.LENGTH_SHORT).show();
                 }else {
-                    SharedPreferencesUtils.putString(getContext(), Constants.KEY_MERGENCY_CONTACT,phone);
-                    mParentActivity.setNavPosition(3);
+                    SharedPreferencesUtils.putString(ContactSettingActivity.this, Constants.KEY_MERGENCY_CONTACT,phone);
+                    ContactSettingActivity.this.finish();
                 }
                 break;
 
             case R.id.tv_no:
-                mParentActivity.setNavPosition(1);
+                ContactSettingActivity.this.finish();
                 break;
         }
     }

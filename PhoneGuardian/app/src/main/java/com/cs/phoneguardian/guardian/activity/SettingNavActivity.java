@@ -15,7 +15,6 @@ import android.widget.RelativeLayout;
 import com.cs.phoneguardian.R;
 import com.cs.phoneguardian.guardian.fragment.BindSIMFragment;
 import com.cs.phoneguardian.guardian.fragment.EnalbeSettingFragment;
-import com.cs.phoneguardian.guardian.fragment.EndSettingFragment;
 import com.cs.phoneguardian.guardian.fragment.MergencyContactSettingFragment;
 import com.cs.phoneguardian.guardian.fragment.PassWordSettingFragment;
 import com.cs.phoneguardian.utils.DialogUtils;
@@ -44,8 +43,6 @@ public class SettingNavActivity extends AppCompatActivity {
     ImageView ivDot2;
     @BindView(R.id.iv_dot_3)
     ImageView ivDot3;
-    @BindView(R.id.iv_dot_4)
-    ImageView ivDot4;
     private List<Fragment> mFragmentList;
     private List<ImageView> mImageViewList;
 
@@ -60,12 +57,10 @@ public class SettingNavActivity extends AppCompatActivity {
         BindSIMFragment bindSIMFragment = new BindSIMFragment();
         MergencyContactSettingFragment mergencyContactSettingFragment = new MergencyContactSettingFragment();
         EnalbeSettingFragment enalbeSettingFragment = new EnalbeSettingFragment();
-        EndSettingFragment endSettingFragment = new EndSettingFragment();
         mFragmentList.add(passWordSettingFragment);
         mFragmentList.add(bindSIMFragment);
         mFragmentList.add(mergencyContactSettingFragment);
         mFragmentList.add(enalbeSettingFragment);
-        mFragmentList.add(endSettingFragment);
         vp.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
@@ -83,7 +78,6 @@ public class SettingNavActivity extends AppCompatActivity {
         mImageViewList.add(ivDot1);
         mImageViewList.add(ivDot2);
         mImageViewList.add(ivDot3);
-        mImageViewList.add(ivDot4);
         vp.setScrollEnable(false);
         vp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

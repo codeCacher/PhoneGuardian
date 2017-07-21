@@ -64,12 +64,6 @@
                 android:layout_margin="3dp"
                 android:src="@drawable/dot_gray_blue" />
 
-            <ImageView
-                android:id="@+id/iv_dot_4"
-                android:layout_width="5dp"
-                android:layout_height="5dp"
-                android:layout_margin="3dp"
-                android:src="@drawable/dot_gray_blue" />
         </LinearLayout>
     </RelativeLayout>
 

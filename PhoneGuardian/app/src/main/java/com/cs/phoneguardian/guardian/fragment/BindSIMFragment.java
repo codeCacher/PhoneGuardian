@@ -84,6 +84,10 @@ public class BindSIMFragment extends Fragment implements View.OnClickListener{
                 break;
 
             case R.id.tv_yes:
+                if(mCheckState){
+                    String simSerialNumber = PhoneStateDataSource.getInstance(getContext()).getSimSerialNumber();
+                    SharedPreferencesUtils.putString(getContext(),Constants.KEY_SIM,simSerialNumber);
+                }
                 mParentActivity.setNavPosition(2);
                 break;
 

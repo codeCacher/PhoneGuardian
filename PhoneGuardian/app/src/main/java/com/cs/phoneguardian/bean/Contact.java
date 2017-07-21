@@ -1,10 +1,13 @@
 package com.cs.phoneguardian.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Administrator on 2017/4/16.
  */
 
-public class Contact {
+public class Contact implements Parcelable {
     private String id;
     private String name;
     private String phoneNumber;
@@ -20,6 +23,51 @@ public class Contact {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.address = address;
+    }
+
+    protected Contact(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        phoneNumber = in.readString();
+        email = in.readString();
+        address = in.readString();
+    }
+
+    public static final Creator<Contact> CREATOR = new Creator<Contact>() {
+        @Override
+        public Contact createFromParcel(Parcel in) {
+            return new Contact(in);
+        }
+
+        @Override
+        public Contact[] newArray(int size) {
+            return new Contact[size];
+        }
+    };
+
+    @Override
+    public String toString() {
+        return "Contact{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeString(phoneNumber);
+        dest.writeString(email);
+        dest.writeString(address);
     }
 
     public String getId() {
@@ -63,14 +111,4 @@ public class Contact {
         this.address = address;
     }
 
-    @Override
-    public String toString() {
-        return "Contact{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", email='" + email + '\'' +
-                ", address='" + address + '\'' +
-                '}';
-    }
 }

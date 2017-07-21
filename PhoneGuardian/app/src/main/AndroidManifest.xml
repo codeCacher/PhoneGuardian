@@ -34,6 +34,9 @@
         <activity android:name=".guardian.activity.SettingNavActivity"
             android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".guardian.activity.SettingActivity" />
+        <activity android:name=".guardian.activity.ContactActivity" />
+        <activity android:name=".guardian.activity.ContactSettingActivity" />
+        <activity android:name=".guardian.activity.PasswordSettingActivity" />
 
         <receiver android:name=".AdminReceiver"
             android:label="@string/device_admin"

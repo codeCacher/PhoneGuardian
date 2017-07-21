@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="设置"
+            android:textColor="@android:color/white"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+
+    <View
+        android:background="@color/colorDecorationWhite"
+        android:layout_width="match_parent"
+        android:layout_height="1px"/>
+
+
+    <RelativeLayout
+        android:id="@+id/rl_password"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <TextView
+            android:gravity="center"
+            android:layout_marginStart="15dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:textColor="@color/colorGrayBlack"
+            android:textSize="15sp"
+            android:text="重设密码"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:layout_marginEnd="15dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/arrow_more_right"
+            android:layout_width="25dp"
+            android:layout_height="25dp" />
+
+        <View
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorDecorationWhite"
+            android:layout_width="match_parent"
+            android:layout_height="1px"/>
+
+    </RelativeLayout>
+
+    <View
+        android:background="@color/colorDecorationWhite"
+        android:layout_width="match_parent"
+        android:layout_height="1px"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_contact"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <TextView
+            android:id="@+id/tv_contact"
+            android:gravity="center"
+            android:layout_marginStart="15dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:textColor="@color/colorGrayBlack"
+            android:textSize="15sp"
+            android:text="紧急联系人:1234567889"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:layout_marginEnd="15dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/arrow_more_right"
+            android:layout_width="25dp"
+            android:layout_height="25dp" />
+
+        <View
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorDecorationWhite"
+            android:layout_width="match_parent"
+            android:layout_height="1px"/>
+
+    </RelativeLayout>
+
+    <View
+        android:background="@color/colorDecorationWhite"
+        android:layout_width="match_parent"
+        android:layout_height="1px"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_sim"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <TextView
+            android:id="@+id/tv_sim_state"
+            android:layout_margin="15dp"
+            android:textSize="15sp"
+            android:textColor="@color/colorGrayBlack"
+            android:text="SIM卡未绑定"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <android.support.v7.widget.SwitchCompat
+            android:clickable="false"
+            android:id="@+id/sc_sim_state"
+            android:layout_marginEnd="15dp"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+    </RelativeLayout>
+
+    <View
+        android:background="@color/colorDecorationWhite"
+        android:layout_width="match_parent"
+        android:layout_height="1px"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_enalbe"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <TextView
+            android:id="@+id/tv_enable_state"
+            android:layout_margin="15dp"
+            android:textSize="15sp"
+            android:textColor="@color/colorGrayBlack"
+            android:text="手机防盗未开启"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <android.support.v7.widget.SwitchCompat
+            android:clickable="false"
+            android:id="@+id/sc_enalbe_state"
+            android:layout_marginEnd="15dp"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+    </RelativeLayout>
+
+    <View
+        android:background="@color/colorDecorationWhite"
+        android:layout_width="match_parent"
+        android:layout_height="1px"/>
+
+</LinearLayout>

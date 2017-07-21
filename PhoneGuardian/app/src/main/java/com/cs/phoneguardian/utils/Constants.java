@@ -35,6 +35,15 @@ public class Constants {
      */
     public static final String KEY_SIM = "keySIM";
 
+    /**
+     * 紧急联系人手机号码sp键值
+     */
+    public static final String KEY_MERGENCY_CONTACT = "keyMergencyContact";
+
 
     //Activity之间传递数据的Key
+    /**
+     * 紧急联系人手机号码选择结果
+     */
+    public static final String KEY_MERCONTACT_RESULT = "keyMerContactResult";
 }
