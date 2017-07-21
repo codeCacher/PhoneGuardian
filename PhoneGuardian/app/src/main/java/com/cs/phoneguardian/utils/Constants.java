@@ -10,6 +10,24 @@ public class Constants {
      */
     public static final String SP_FILE_NAME = "cfg_sp";
 
+    //手机防盗短信命令
+    /**
+     * 手机防盗短信命令：GPS追踪
+     */
+    public static final String SMS_CMD_LOCATION = "#*location*#";
+    /**
+     * 手机防盗短信命令：播放报警音乐
+     */
+    public static final String SMS_CMD_ALARM = "#*alarm*#";
+    /**
+     * 手机防盗短信命令：数据销毁
+     */
+    public static final String SMS_CMD_WIPE = "#*wipedata*#";
+    /**
+     * 手机防盗短信命令：远程锁屏
+     */
+    public static final String SMS_CMD_LOCK = "#*lockscreen*#";
+
     /**
      * 上一次的体检分数的sp键值
      */

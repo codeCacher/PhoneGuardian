@@ -1,17 +1,11 @@
 package com.cs.phoneguardian.guardian.receiver;
 
-import android.app.Activity;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.SystemClock;
 import android.telephony.SmsManager;
 import android.text.TextUtils;
-import android.util.Log;
 
-import com.cs.phoneguardian.main.MainActivity;
 import com.cs.phoneguardian.modle.PhoneStateDataSource;
 import com.cs.phoneguardian.utils.Constants;
 import com.cs.phoneguardian.utils.SharedPreferencesUtils;
