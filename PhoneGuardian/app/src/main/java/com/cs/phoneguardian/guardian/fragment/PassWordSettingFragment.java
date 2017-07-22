@@ -1,6 +1,5 @@
 package com.cs.phoneguardian.guardian.fragment;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -75,8 +74,8 @@ public class PassWordSettingFragment extends Fragment implements View.OnClickLis
                     Toast.makeText(getContext(), "两次输入的密码不同", Toast.LENGTH_SHORT).show();
                 } else if (password.equals(confirmPassword)) {
                     //输入密码成功
-                    SharedPreferencesUtils.putString(getContext(), Constants.KEY_PSD, MD5Utils.MD5Encode(password));
-                    SharedPreferencesUtils.putBoolean(getContext(), Constants.KEY_PSD_STATE, true);
+                    SharedPreferencesUtils.putString(getContext(), Constants.KEY_GUARD_PSD, MD5Utils.MD5Encode(password));
+                    SharedPreferencesUtils.putBoolean(getContext(), Constants.KEY_GUARD_PSD_STATE, true);
                     Toast.makeText(getContext(), "密码设置成功", Toast.LENGTH_SHORT).show();
                     SettingNavActivity parentActivity = (SettingNavActivity) getActivity();
                     parentActivity.setNavPosition(1);

@@ -15,36 +15,48 @@ import android.provider.Settings;
 public class CustomActivityJumpUtils {
     /**
      * 开启系统应用信息界面
-     * @param context 上下文
+     *
+     * @param context     上下文
      * @param packageName 包名
      */
-    public static void startAppInfoActivity(Context context,String packageName){
+    public static void startAppInfoActivity(Context context, String packageName) {
         Intent intent = new Intent();
         intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        intent.setData(Uri.fromParts("package",packageName, null));
+        intent.setData(Uri.fromParts("package", packageName, null));
         context.startActivity(intent);
     }
 
     /**
      * 开启设备管理器界面
+     *
      * @param context 上下文
-     * @param CN 组建名对象
+     * @param CN      组建名对象
      */
-    public static void startDevicePolicyActivity(Context context, ComponentName CN){
+    public static void startDevicePolicyActivity(Context context, ComponentName CN) {
         Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
-        intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN,CN);
+        intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, CN);
         context.startActivity(intent);
     }
 
     /**
      * 开启设备管理器界面
+     *
      * @param activity 启动activity
-     * @param CN 组建名对象
+     * @param CN       组建名对象
      */
-    public static void startDevicePolicyActivityForResult(Activity activity,int requestCode, ComponentName CN){
+    public static void startDevicePolicyActivityForResult(Activity activity, int requestCode, ComponentName CN) {
         Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
-        intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN,CN);
-        intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION,"设备管理器123");
-        activity.startActivityForResult(intent,requestCode);
+        intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, CN);
+        activity.startActivityForResult(intent, requestCode);
+    }
+
+    /**
+     * 开启设备管理器界面
+     *
+     * @param activity 启动activity
+     */
+    public static void startUsageAccessActivityForResult(Activity activity, int requestCode) {
+        Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+        activity.startActivityForResult(intent, requestCode);
     }
 }

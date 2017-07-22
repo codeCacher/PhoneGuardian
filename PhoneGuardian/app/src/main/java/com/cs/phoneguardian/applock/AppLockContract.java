@@ -17,6 +17,8 @@
 package com.cs.phoneguardian.applock;
 
 
+import android.app.Activity;
+
 import com.cs.phoneguardian.BasePresenter;
 import com.cs.phoneguardian.BaseView;
 import com.cs.phoneguardian.bean.AppInfo;
@@ -32,11 +34,13 @@ public interface AppLockContract {
         void upDateAppList(List<AppInfo> list);
         void showLockAppCount(int count);
         void showPassWordSettingActivity();
-        void showPassWordDialog();
+        void showPassWordDialog(String correctPsd);
     }
 
     interface Presenter extends BasePresenter {
         void removeLockApp(AppInfo info);
         void addLockApp(AppInfo info);
+        void openAppLock(Activity activity);
+        void onSetUsageAccessResult();
     }
 }

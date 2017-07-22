@@ -31,32 +31,42 @@ public class Constants {
     /**
      * 上一次的体检分数的sp键值
      */
-    public static final String KEY_CHECK_RESULT = "checkResult";
+    public static final String KEY_CHECK_RESULT = "key_check_result";
 
     /**
      * 手机防盗是否开启的sp键值
      */
-    public static final String KEY_GUARD_OPEN_STATE = "guardOpen";
+    public static final String KEY_GUARD_OPEN_STATE = "key_guard_open_state";
 
     /**
      * 手机防盗是否已经设置密码的sp键值
      */
-    public static final String KEY_PSD_STATE = "keyCipherState";
+    public static final String KEY_GUARD_PSD_STATE = "key_guard_psd_state";
 
     /**
      * 手机防盗密码的sp键值
      */
-    public static final String KEY_PSD = "keyPsd";
+    public static final String KEY_GUARD_PSD = "key_guard_psd";
 
     /**
      * 手机SIM卡序列号sp键值
      */
-    public static final String KEY_SIM = "keySIM";
+    public static final String KEY_SIM = "key_sim";
 
     /**
      * 紧急联系人手机号码sp键值
      */
-    public static final String KEY_MERGENCY_CONTACT = "keyMergencyContact";
+    public static final String KEY_MERGENCY_CONTACT = "key_mergency_contact";
+
+    /**
+     * 应用锁密码sp键值
+     */
+    public static final String KEY_APP_LOCK_PASSWORD = "key_app_lock_password";
+
+    /**
+     * 应用锁是否开启sp键值
+     */
+    public static final String KEY_ENABLE_APP_LOCK = "key_enable_app_lock";
 
 
     //Activity之间传递数据的Key
@@ -64,4 +74,5 @@ public class Constants {
      * 紧急联系人手机号码选择结果
      */
     public static final String KEY_MERCONTACT_RESULT = "keyMerContactResult";
+
 }

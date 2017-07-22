@@ -108,7 +108,7 @@ public class GuardActivity extends AppCompatActivity implements View.OnClickList
     protected void onResume() {
         super.onResume();
         //获取目前的设置状态，手机防盗是否已开启，密码是否已经设置
-        mCipherState = SharedPreferencesUtils.getBoolean(this, Constants.KEY_PSD_STATE, false);
+        mCipherState = SharedPreferencesUtils.getBoolean(this, Constants.KEY_GUARD_PSD_STATE, false);
         mGuardOpenState = SharedPreferencesUtils.getBoolean(this, Constants.KEY_GUARD_OPEN_STATE, false);
         if(mGuardOpenState){
             tvState.setText("手机防盗已开启");
@@ -150,7 +150,7 @@ public class GuardActivity extends AppCompatActivity implements View.OnClickList
             public void onClick(View v) {
                 String inputPsd = etPsd.getText().toString();
                 String MD5InputPsd = MD5Utils.MD5Encode(inputPsd);
-                String MD5Psd = SharedPreferencesUtils.getString(GuardActivity.this, Constants.KEY_PSD, "");
+                String MD5Psd = SharedPreferencesUtils.getString(GuardActivity.this, Constants.KEY_GUARD_PSD, "");
                 if(MD5InputPsd.equals(MD5Psd)){
                     listener.OnPSDPassde();
                     cipherDialog.dismiss();
