@@ -68,11 +68,13 @@ public class AppLockSettingActivity extends AppCompatActivity implements View.On
                     tvEnableState.setText("应用锁未开启");
                     scEnalbeState.setChecked(false);
                     SharedPreferencesUtils.putBoolean(this,Constants.KEY_ENABLE_APP_LOCK,false);
+                    stopService(new Intent(this,AppLockService.class));
                 }else {
                     mEnalbe = true;
                     tvEnableState.setText("应用锁开启");
                     scEnalbeState.setChecked(true);
                     SharedPreferencesUtils.putBoolean(this,Constants.KEY_ENABLE_APP_LOCK,true);
+                    startService(new Intent(this,AppLockService.class));
                 }
                 break;
         }

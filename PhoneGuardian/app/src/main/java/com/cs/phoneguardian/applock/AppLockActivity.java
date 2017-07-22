@@ -88,6 +88,7 @@ public class AppLockActivity extends AppCompatActivity implements AppLockContrac
                     this.finish();
                 }else if(resultCode==RESULT_FINISH){
                     mPresenter.openAppLock(this);
+                    startService(new Intent(this,AppLockService.class));
                 }
                 break;
 
