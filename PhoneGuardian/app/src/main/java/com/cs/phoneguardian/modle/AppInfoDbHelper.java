@@ -23,10 +23,15 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class AppInfoDbHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
 
-    public static final String DATABASE_NAME = "AccLockApp.db";
+    public static final String DATABASE_NAME = "AppInfoDB.db";
 
     private static final String SQL_CREATE_ACC_LOCK_APP_TABLE =
             "create table " + AppInfoPersistenceContract.AppEntry.ACC_LOCK_TABLE_NAME + " (" +
+                    AppInfoPersistenceContract.AppEntry._ID + " integer" + " primary key autoincrement," +
+                    AppInfoPersistenceContract.AppEntry.PACKAGE_NAME + " varchar(100)"+" )";
+
+    private static final String SQL_CREATE__APP_LOCK_TABLE =
+            "create table " + AppInfoPersistenceContract.AppEntry.APP_LOCK_TABLE_NAME + " (" +
                     AppInfoPersistenceContract.AppEntry._ID + " integer" + " primary key autoincrement," +
                     AppInfoPersistenceContract.AppEntry.PACKAGE_NAME + " varchar(100)"+" )";
 
@@ -36,6 +41,7 @@ public class AppInfoDbHelper extends SQLiteOpenHelper {
 
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_ACC_LOCK_APP_TABLE);
+        db.execSQL(SQL_CREATE__APP_LOCK_TABLE);
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

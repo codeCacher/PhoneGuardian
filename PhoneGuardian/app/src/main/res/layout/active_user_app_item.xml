@@ -43,7 +43,7 @@
             android:layout_height="15dp" />
 
         <TextView
-            android:id="@+id/tv_mem_size"
+            android:id="@+id/tv_lock_state"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_name"
@@ -51,14 +51,15 @@
             android:textColor="@color/colorGrayBlack"
             android:textSize="12sp" />
 
-        <ImageView
+        <android.support.v7.widget.SwitchCompat
+            android:clickable="false"
             android:layout_centerVertical="true"
-            android:id="@+id/iv_check_state"
+            android:id="@+id/sc_check_state"
             android:src="@drawable/checkbox_selector"
             android:layout_marginEnd="15dp"
             android:layout_alignParentEnd="true"
-            android:layout_width="25dp"
-            android:layout_height="25dp" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </RelativeLayout>
 
     <View

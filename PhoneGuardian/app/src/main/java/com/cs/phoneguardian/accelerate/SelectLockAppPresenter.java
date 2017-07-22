@@ -1,5 +1,6 @@
 package com.cs.phoneguardian.accelerate;
 
+import com.cs.phoneguardian.bean.AppInfo;
 import com.cs.phoneguardian.modle.AppInfoDataSource;
 
 import java.util.List;

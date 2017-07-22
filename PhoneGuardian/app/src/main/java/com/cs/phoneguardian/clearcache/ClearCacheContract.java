@@ -18,11 +18,10 @@ package com.cs.phoneguardian.clearcache;
 
 
 import android.app.Activity;
-import android.content.Context;
 
 import com.cs.phoneguardian.BasePresenter;
 import com.cs.phoneguardian.BaseView;
-import com.cs.phoneguardian.accelerate.AppInfo;
+import com.cs.phoneguardian.bean.AppInfo;
 
 import java.util.List;
 

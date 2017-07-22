@@ -5,7 +5,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.SystemClock;
 
-import com.cs.phoneguardian.accelerate.AppInfo;
+import com.cs.phoneguardian.bean.AppInfo;
 import com.cs.phoneguardian.modle.AppInfoDataSource;
 import com.cs.phoneguardian.modle.PhoneStateDataSource;
 

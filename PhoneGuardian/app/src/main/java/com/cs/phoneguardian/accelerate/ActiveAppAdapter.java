@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cs.phoneguardian.R;
+import com.cs.phoneguardian.bean.AppInfo;
 import com.cs.phoneguardian.utils.CustomActivityJumpUtils;
 
 import java.util.ArrayList;
@@ -197,9 +198,9 @@ public class ActiveAppAdapter extends RecyclerView.Adapter {
         ImageView ivIcon;
         @BindView(R.id.tv_name)
         TextView tvName;
-        @BindView(R.id.tv_mem_size)
+        @BindView(R.id.tv_lock_state)
         TextView tvMemSize;
-        @BindView(R.id.iv_check_state)
+        @BindView(R.id.sc_check_state)
         ImageView ivCheckState;
         @BindView(R.id.rl_root)
         RelativeLayout rlRoot;
@@ -217,7 +218,7 @@ public class ActiveAppAdapter extends RecyclerView.Adapter {
         ImageView ivIcon;
         @BindView(R.id.tv_name)
         TextView tvName;
-        @BindView(R.id.tv_mem_size)
+        @BindView(R.id.tv_lock_state)
         TextView tvMemSize;
         @BindView(R.id.iv_detail)
         ImageView ivDetail;

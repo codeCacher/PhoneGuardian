@@ -96,9 +96,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initViewPager() {
-        String[] nameList0 = new String[]{"加速优化", "空间清理", "手机防盗", "省电管理", "流量管理", "通知中心"};
-        Integer[] pictureIdList0 = new Integer[]{R.drawable.accelerate, R.drawable.clean, R.drawable.lock_white,
-                R.drawable.accelerate, R.drawable.accelerate, R.drawable.accelerate};
+        String[] nameList0 = new String[]{"加速优化", "空间清理", "手机防盗", "应用锁", "流量管理", "通知中心"};
+        Integer[] pictureIdList0 = new Integer[]{R.drawable.accelerate, R.drawable.clean, R.drawable.sticker_white,
+                R.drawable.lock_white, R.drawable.accelerate, R.drawable.accelerate};
         String[] nameList1 = new String[]{"加速优化", "空间清理", "骚扰拦截", "省电管理", "流量管理", "通知中心"};
         Integer[] pictureIdList1 = new Integer[]{R.drawable.accelerate, R.drawable.clean, R.drawable.accelerate,
                 R.drawable.accelerate, R.drawable.accelerate, R.drawable.accelerate};

@@ -18,10 +18,10 @@ package com.cs.phoneguardian.accelerate;
 
 
 import android.content.Context;
-import android.widget.BaseAdapter;
 
 import com.cs.phoneguardian.BasePresenter;
 import com.cs.phoneguardian.BaseView;
+import com.cs.phoneguardian.bean.AppInfo;
 
 import java.util.List;
 

@@ -14,7 +14,7 @@ import android.os.Debug;
 import android.os.RemoteException;
 
 import com.cs.phoneguardian.R;
-import com.cs.phoneguardian.accelerate.AppInfo;
+import com.cs.phoneguardian.bean.AppInfo;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -203,6 +203,40 @@ public class AppInfoDataSource implements BaseDataSource {
     }
 
     /**
+     * 获取应用锁应用列表
+     * @return 应用锁应用列表
+     */
+    public List<AppInfo> getAppLockAppList(){
+        List<AppInfo> list = new ArrayList<>();
+        Cursor cursor = mAppDB.query(AppInfoPersistenceContract.AppEntry.APP_LOCK_TABLE_NAME,
+                new String[]{AppInfoPersistenceContract.AppEntry.PACKAGE_NAME}, null, null, null, null, null);
+        if(cursor == null) {
+            return list;
+        }
+        while(cursor.moveToNext()) {
+            try {
+                AppInfo appInfo = new AppInfo();
+                ApplicationInfo applicationInfo = mPackageManager.getApplicationInfo(cursor.getString(0), 0);
+                appInfo.setPackageName(cursor.getString(0));
+                appInfo.setName(applicationInfo.loadLabel(mPackageManager).toString());
+                appInfo.setIcon(applicationInfo.loadIcon(mPackageManager));
+                if ((applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == ApplicationInfo.FLAG_SYSTEM) {
+                    appInfo.setSystem(true);
+                } else {
+                    appInfo.setSystem(false);
+                }
+                appInfo.setAppLock(true);
+                appInfo.setSeleced(false);
+                list.add(appInfo);
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        cursor.close();
+        return list;
+    }
+
+    /**
      * 结束列表中所有后台进程
      * @param list 进程列表
      */
@@ -231,6 +265,27 @@ public class AppInfoDataSource implements BaseDataSource {
      */
     public int  removeAppFromAccLockDB(AppInfo info){
         return mAppDB.delete(AppInfoPersistenceContract.AppEntry.ACC_LOCK_TABLE_NAME,
+                AppInfoPersistenceContract.AppEntry.PACKAGE_NAME + "= ?", new String[]{info.getPackageName()});
+    }
+
+    /**
+     * 向应用锁数据库中加入一个App
+     * @param info App信息对象
+     * @return 插入的条目数
+     */
+    public long addAppToAppLockDB(AppInfo info){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(AppInfoPersistenceContract.AppEntry.PACKAGE_NAME,info.getPackageName());
+        return mAppDB.insert(AppInfoPersistenceContract.AppEntry.APP_LOCK_TABLE_NAME, null, contentValues);
+    }
+
+    /**
+     * 从应用锁数据库中移除一个App
+     * @param info App信息对象
+     * @return 删除的条目数
+     */
+    public int  removeAppFromAppLockDB(AppInfo info){
+        return mAppDB.delete(AppInfoPersistenceContract.AppEntry.APP_LOCK_TABLE_NAME,
                 AppInfoPersistenceContract.AppEntry.PACKAGE_NAME + "= ?", new String[]{info.getPackageName()});
     }
 

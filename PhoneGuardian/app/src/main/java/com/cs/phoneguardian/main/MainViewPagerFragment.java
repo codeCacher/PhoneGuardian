@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.cs.phoneguardian.R;
 import com.cs.phoneguardian.accelerate.AccActivity;
+import com.cs.phoneguardian.applock.AppLockActivity;
 import com.cs.phoneguardian.clearcache.ClearCacheActivity;
 import com.cs.phoneguardian.guardian.activity.GuardActivity;
 
@@ -86,8 +87,7 @@ public class MainViewPagerFragment extends Fragment implements FunctionItemAdapt
                 break;
 
             case 3:
-                Toast.makeText(getContext(),position+"",Toast.LENGTH_SHORT).show();
-
+                AppLockActivity.startAppLockActivity(getContext());
                 break;
 
             case 4:

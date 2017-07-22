@@ -44,6 +44,7 @@
         <activity android:name=".guardian.activity.ContactActivity" />
         <activity android:name=".guardian.activity.ContactSettingActivity" />
         <activity android:name=".guardian.activity.PasswordSettingActivity" />
+        <activity android:name=".applock.AppLockActivity" />
 
         <receiver
             android:name=".AdminReceiver"

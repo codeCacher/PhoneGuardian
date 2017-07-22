@@ -19,7 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cs.phoneguardian.R;
-import com.cs.phoneguardian.clearcache.ClearCacheActivity;
+import com.cs.phoneguardian.bean.AppInfo;
 import com.cs.phoneguardian.modle.AppInfoDataSource;
 import com.cs.phoneguardian.modle.PhoneStateDataSource;
 import com.cs.phoneguardian.view.NestScrollLayout;
@@ -44,7 +44,7 @@ public class AccActivity extends AppCompatActivity implements AccContract.View {
     TextView tvPercent;
     @BindView(R.id.rl_percent)
     RelativeLayout rlPercent;
-    @BindView(R.id.tv_mem_size)
+    @BindView(R.id.tv_lock_state)
     TextView tvMemSize;
     @BindView(R.id.child_id)
     RecyclerView rvActiveApp;

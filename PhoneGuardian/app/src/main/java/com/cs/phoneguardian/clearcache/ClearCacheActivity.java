@@ -16,7 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cs.phoneguardian.R;
-import com.cs.phoneguardian.accelerate.AppInfo;
+import com.cs.phoneguardian.bean.AppInfo;
 import com.cs.phoneguardian.modle.AppInfoDataSource;
 import com.cs.phoneguardian.modle.PhoneStateDataSource;
 import com.cs.phoneguardian.view.NestScrollLayout;

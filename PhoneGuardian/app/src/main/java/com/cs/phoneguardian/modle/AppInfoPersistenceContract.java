@@ -30,6 +30,7 @@ public final class AppInfoPersistenceContract {
     /* Inner class that defines the table contents */
     public static abstract class AppEntry implements BaseColumns {
         public static final String ACC_LOCK_TABLE_NAME = "accLockApp";
+        public static final String APP_LOCK_TABLE_NAME = "appLockApp";
         public static final String PACKAGE_NAME = "packageName";
     }
 }
