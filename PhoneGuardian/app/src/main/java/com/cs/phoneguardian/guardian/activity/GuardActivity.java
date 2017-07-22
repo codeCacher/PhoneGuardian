@@ -1,5 +1,7 @@
 package com.cs.phoneguardian.guardian.activity;
 
+import android.app.admin.DevicePolicyManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,8 +16,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cs.phoneguardian.AdminReceiver;
 import com.cs.phoneguardian.R;
 import com.cs.phoneguardian.utils.Constants;
+import com.cs.phoneguardian.utils.CustomActivityJumpUtils;
+import com.cs.phoneguardian.utils.DialogUtils;
 import com.cs.phoneguardian.utils.MD5Utils;
 import com.cs.phoneguardian.utils.SharedPreferencesUtils;
 import com.cs.phoneguardian.view.NestScrollLayout;
@@ -63,6 +68,8 @@ public class GuardActivity extends AppCompatActivity implements View.OnClickList
     private int mBottomHeight;
     private boolean mGuardOpenState;
     private boolean mCipherState;
+    private ComponentName mComponentName;
+    private DevicePolicyManager mDPM;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,6 +85,23 @@ public class GuardActivity extends AppCompatActivity implements View.OnClickList
         rlExplarin.setOnClickListener(this);
         rlSetNav.setOnClickListener(this);
         rlSetting.setOnClickListener(this);
+
+        //检查设备管理器权限
+        mComponentName = new ComponentName(this, AdminReceiver.class);
+        mDPM = (DevicePolicyManager) getSystemService(DEVICE_POLICY_SERVICE);
+        if(!mDPM.isAdminActive(mComponentName)){
+            DialogUtils.showConfirmDialog(this, "手机防盗功能需要管理员权限，是否前往开启？", new DialogUtils.OnButtonClickedListener() {
+                @Override
+                public void OnConfirm() {
+                    CustomActivityJumpUtils.startDevicePolicyActivityForResult(GuardActivity.this,0, mComponentName);
+                }
+
+                @Override
+                public void OnCancel() {
+                    Toast.makeText(GuardActivity.this,"未激活管理员权限，无法使用手机防盗功能",Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     @Override
@@ -90,6 +114,18 @@ public class GuardActivity extends AppCompatActivity implements View.OnClickList
             tvState.setText("手机防盗已开启");
         }else {
             tvState.setText("手机防盗未开启");
+        }
+
+        if(!mDPM.isAdminActive(mComponentName)) {
+            tvState.setText("管理员权限未开启");
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==0){
+            Toast.makeText(this,"未激活管理员权限，无法使用手机防盗功能",Toast.LENGTH_SHORT).show();
         }
     }
 

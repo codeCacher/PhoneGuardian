@@ -52,10 +52,14 @@ public class PassWordSettingFragment extends Fragment implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_no:
-                DialogUtils.showConfirmDialog(getContext(), "是否确定退出设置导航？", new DialogInterface.OnClickListener() {
+                DialogUtils.showConfirmDialog(getContext(), "是否确定退出设置导航？", new DialogUtils.OnButtonClickedListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void OnConfirm() {
                         getActivity().finish();
+                    }
+
+                    @Override
+                    public void OnCancel() {
                     }
                 });
                 break;

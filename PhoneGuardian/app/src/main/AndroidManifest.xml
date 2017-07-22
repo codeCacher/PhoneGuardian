@@ -69,6 +69,7 @@
         </receiver>
 
         <service android:name=".guardian.service.LocationService" />
+        <service android:name=".guardian.service.AlarmService" />
     </application>
 
 </manifest>

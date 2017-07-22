@@ -104,10 +104,15 @@ public class SettingNavActivity extends AppCompatActivity {
         if(currentItem>0){
             vp.setCurrentItem(--currentItem);
         }else {
-            DialogUtils.showConfirmDialog(this, "是否确定退出导航界面？", new DialogInterface.OnClickListener() {
+            DialogUtils.showConfirmDialog(this, "是否确定退出导航界面？", new DialogUtils.OnButtonClickedListener() {
                 @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    finish();
+                public void OnConfirm() {
+                    SettingNavActivity.this.finish();
+                }
+
+                @Override
+                public void OnCancel() {
+
                 }
             });
         }
