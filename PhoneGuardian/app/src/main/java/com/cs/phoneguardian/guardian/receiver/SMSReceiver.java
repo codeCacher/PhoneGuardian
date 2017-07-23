@@ -7,7 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.telephony.SmsMessage;
 
-import com.cs.phoneguardian.AdminReceiver;
+import com.cs.phoneguardian.global.AdminReceiver;
 import com.cs.phoneguardian.guardian.service.AlarmService;
 import com.cs.phoneguardian.guardian.service.LocationService;
 import com.cs.phoneguardian.utils.Constants;

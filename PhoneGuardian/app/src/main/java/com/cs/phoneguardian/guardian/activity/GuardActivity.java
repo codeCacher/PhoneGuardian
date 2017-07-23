@@ -16,7 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cs.phoneguardian.AdminReceiver;
+import com.cs.phoneguardian.global.AdminReceiver;
 import com.cs.phoneguardian.R;
 import com.cs.phoneguardian.utils.Constants;
 import com.cs.phoneguardian.utils.CustomActivityJumpUtils;

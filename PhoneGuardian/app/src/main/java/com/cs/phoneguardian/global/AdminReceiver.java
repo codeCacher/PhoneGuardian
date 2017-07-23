@@ -1,4 +1,4 @@
-package com.cs.phoneguardian;
+package com.cs.phoneguardian.global;
 
 import android.app.admin.DeviceAdminReceiver;
 import android.content.Context;

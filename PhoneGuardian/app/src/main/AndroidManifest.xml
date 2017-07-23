@@ -58,7 +58,7 @@
             android:excludeFromRecents="true"/>
 
         <receiver
-            android:name=".AdminReceiver"
+            android:name=".global.AdminReceiver"
             android:description="@string/device_admin_description"
             android:label="@string/device_admin"
             android:permission="android.permission.BIND_DEVICE_ADMIN">
@@ -69,7 +69,7 @@
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".guardian.receiver.BootCompleteReceiver">
+        <receiver android:name=".global.BootCompleteReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>

@@ -1,4 +1,4 @@
-package com.cs.phoneguardian.guardian.receiver;
+package com.cs.phoneguardian.global;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.telephony.SmsManager;
 import android.text.TextUtils;
 
+import com.cs.phoneguardian.applock.AppLockService;
 import com.cs.phoneguardian.modle.PhoneStateDataSource;
 import com.cs.phoneguardian.utils.Constants;
 import com.cs.phoneguardian.utils.SharedPreferencesUtils;
@@ -17,6 +18,12 @@ import com.cs.phoneguardian.utils.SharedPreferencesUtils;
 public class BootCompleteReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
+
+        checkSIM(context);
+        openAppLockService(context);
+    }
+
+    private void checkSIM(Context context) {
         boolean guardOpen = SharedPreferencesUtils.getBoolean(context, Constants.KEY_GUARD_OPEN_STATE, false);
         String savedSIM = SharedPreferencesUtils.getString(context, Constants.KEY_SIM, "");
         String SIM = PhoneStateDataSource.getInstance(context).getSimSerialNumber();
@@ -25,6 +32,13 @@ public class BootCompleteReceiver extends BroadcastReceiver {
             String mergencyContactNumber = SharedPreferencesUtils.getString(context, Constants.KEY_MERGENCY_CONTACT, "");
             SmsManager smsManager = SmsManager.getDefault();
             smsManager.sendTextMessage(mergencyContactNumber, null, "你的手机卡变更了！", null, null);
+        }
+    }
+
+    private void openAppLockService(Context context) {
+        boolean AppLockEnable = SharedPreferencesUtils.getBoolean(context, Constants.KEY_ENABLE_APP_LOCK, false);
+        if(AppLockEnable){
+            context.startService(new Intent(context, AppLockService.class));
         }
     }
 }
