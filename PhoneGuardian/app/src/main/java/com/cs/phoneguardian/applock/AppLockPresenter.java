@@ -2,6 +2,7 @@ package com.cs.phoneguardian.applock;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.widget.Toast;
 
@@ -79,6 +80,7 @@ public class AppLockPresenter implements AppLockContract.Presenter {
             }
         }
         mAppLockView.showLockAppCount(mAppLockAppList.size());
+        mContext.startService(new Intent(mContext,AppLockService.class));
     }
 
     @Override
@@ -86,6 +88,7 @@ public class AppLockPresenter implements AppLockContract.Presenter {
         mAppInfoDataSource.addAppToAppLockDB(info);
         mAppLockAppList.add(info);
         mAppLockView.showLockAppCount(mAppLockAppList.size());
+        mContext.startService(new Intent(mContext,AppLockService.class));
     }
 
     @Override

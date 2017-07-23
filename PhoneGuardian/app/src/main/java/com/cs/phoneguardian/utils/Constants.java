@@ -1,5 +1,7 @@
 package com.cs.phoneguardian.utils;
 
+import android.content.Context;
+
 /**
  * 放一些常量
  */
@@ -68,11 +70,21 @@ public class Constants {
      */
     public static final String KEY_ENABLE_APP_LOCK = "key_enable_app_lock";
 
+    //Intent Filter
+    /**
+     * 应用锁解锁之后告知服务停止锁定该应用的Intent filter
+     */
+    public static final String INTENT_FILT_APP_LOCK_SKIP = "android.intent.action.APP_LOCK_SKIP";
 
     //Activity之间传递数据的Key
     /**
      * 紧急联系人手机号码选择结果
      */
     public static final String KEY_MERCONTACT_RESULT = "keyMerContactResult";
+
+    /**
+     * 包名
+     */
+    public static final String KEY_PKG_NAME_EXTRA = "key_pkg_name_extra";
 
 }

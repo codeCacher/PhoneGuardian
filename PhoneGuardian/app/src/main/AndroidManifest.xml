@@ -52,6 +52,7 @@
         <activity android:name=".applock.AppLockActivity" />
         <activity android:name=".applock.AppLockPasswordSettingActivity" />
         <activity android:name=".applock.AppLockSettingActivity" />
+        <activity android:name=".applock.LockActivity"  android:launchMode="singleInstance"/>
 
         <receiver
             android:name=".AdminReceiver"
