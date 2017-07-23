@@ -59,4 +59,17 @@ public class CustomActivityJumpUtils {
         Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
         activity.startActivityForResult(intent, requestCode);
     }
+
+
+    /**
+     * 开启系统桌面
+     *
+     * @param context 上下文
+     */
+    public static void startLauncher(Context context) {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
 }

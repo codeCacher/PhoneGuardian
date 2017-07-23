@@ -15,6 +15,7 @@ import com.cs.phoneguardian.R;
 import com.cs.phoneguardian.bean.AppInfo;
 import com.cs.phoneguardian.modle.AppInfoDataSource;
 import com.cs.phoneguardian.utils.Constants;
+import com.cs.phoneguardian.utils.CustomActivityJumpUtils;
 import com.cs.phoneguardian.utils.MD5Utils;
 import com.cs.phoneguardian.utils.SharedPreferencesUtils;
 
@@ -62,6 +63,12 @@ public class LockActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    public void onBackPressed() {
+        CustomActivityJumpUtils.startLauncher(getApplicationContext());
+        super.onBackPressed();
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.tv_yes:
@@ -78,6 +85,7 @@ public class LockActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.tv_no:
+                CustomActivityJumpUtils.startLauncher(getApplicationContext());
                 this.finish();
                 break;
         }
