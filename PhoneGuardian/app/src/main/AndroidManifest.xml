@@ -56,6 +56,7 @@
             android:windowSoftInputMode="adjustResize"
             android:launchMode="singleInstance"
             android:excludeFromRecents="true"/>
+        <activity android:name=".intercept.view.InterceptAcivity" />
 
         <receiver
             android:name=".global.AdminReceiver"
@@ -74,7 +75,7 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".guardian.receiver.SMSReceiver">
+        <receiver android:name=".global.SMSReceiver">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_root"
+    android:layout_width="match_parent"
+    android:layout_height="50dp">
+
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="15dp"
+        android:text="10/22"
+        android:textColor="@color/colorGrayBlack"
+        android:textSize="10sp" />
+
+    <View
+        android:id="@+id/v_vertical"
+        android:layout_width="1px"
+        android:layout_height="match_parent"
+        android:layout_marginStart="50dp"
+        android:background="@color/colorGrayBlack" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="70dp"
+        android:background="@color/colorDecorationWhite" />
+
+    <ImageView
+        android:layout_width="6dp"
+        android:layout_height="6dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="47dp"
+        android:src="@drawable/circle_decorate_white" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="20dp"
+        android:layout_toEndOf="@+id/v_vertical">
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="1"
+            android:text="123456"
+            android:textColor="@android:color/black"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_name"
+            android:ellipsize="end"
+            android:lines="1"
+            android:text="123456"
+            android:textColor="@color/colorGrayBlack"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+
+</RelativeLayout>

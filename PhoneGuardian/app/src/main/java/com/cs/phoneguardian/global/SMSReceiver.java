@@ -1,4 +1,4 @@
-package com.cs.phoneguardian.guardian.receiver;
+package com.cs.phoneguardian.global;
 
 import android.app.admin.DevicePolicyManager;
 import android.content.BroadcastReceiver;

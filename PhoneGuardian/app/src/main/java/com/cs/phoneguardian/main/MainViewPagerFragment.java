@@ -15,6 +15,7 @@ import com.cs.phoneguardian.accelerate.AccActivity;
 import com.cs.phoneguardian.applock.AppLockActivity;
 import com.cs.phoneguardian.clearcache.ClearCacheActivity;
 import com.cs.phoneguardian.guardian.activity.GuardActivity;
+import com.cs.phoneguardian.intercept.view.InterceptAcivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -91,8 +92,7 @@ public class MainViewPagerFragment extends Fragment implements FunctionItemAdapt
                 break;
 
             case 4:
-                Toast.makeText(getContext(),position+"",Toast.LENGTH_SHORT).show();
-
+                InterceptAcivity.startInterceptAcivity(getContext());
                 break;
 
             case 5:
