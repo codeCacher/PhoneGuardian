@@ -18,7 +18,6 @@ import android.widget.TextView;
 import com.cs.phoneguardian.R;
 import com.cs.phoneguardian.bean.Contact;
 import com.cs.phoneguardian.bean.InterceptContact;
-import com.cs.phoneguardian.guardian.activity.ContactActivity;
 import com.cs.phoneguardian.intercept.InterceptContract;
 import com.cs.phoneguardian.intercept.modle.InterceptDataSource;
 import com.cs.phoneguardian.intercept.presenter.BlackWhitePresenter;
@@ -123,7 +122,7 @@ public class BlackWhiteContactActivity extends AppCompatActivity implements View
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(data!=null){
-            Contact contact = (Contact)data.getParcelableExtra(Constants.KEY_CONTACT_RESULT);
+            ArrayList<Contact> mSelectContactList = data.getParcelableArrayListExtra(Constants.KEY_SELECTED_CONTACT);
             if(requestCode==BLACK_STATE){
                 mPresenter.addBlackContact();
             }else {

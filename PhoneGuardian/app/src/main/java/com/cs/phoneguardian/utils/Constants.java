@@ -114,4 +114,8 @@ public class Constants {
      */
     public static final String KEY_BLACK_WHITE_CONTACT_START_STATE = "key_black_white_contact_start_state";
 
+    /**
+     * 选择的联系人列表键值
+     */
+    public static final String KEY_SELECTED_CONTACT = "key_selected_contact";
 }

@@ -60,6 +60,7 @@
         <activity android:name=".intercept.view.InterceptSettingActivity" />
         <activity android:name=".intercept.view.InterceptRuleActivity" />
         <activity android:name=".intercept.view.InterceptContact.BlackWhiteContactActivity" />
+        <activity android:name=".intercept.view.InterceptContact.ContactActivity" />
 
         <receiver
             android:name=".global.AdminReceiver"

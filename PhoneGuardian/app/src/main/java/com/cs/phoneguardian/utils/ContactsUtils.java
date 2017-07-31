@@ -53,6 +53,7 @@ public class ContactsUtils {
                                 break;
                         }
                     }
+                    contact.setSelected(false);
                     contactsList.add(contact);
                     contactCursor.close();
                 }

@@ -15,6 +15,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -35,7 +36,7 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2017/7/21.
  */
 
-public class ContactActivity extends AppCompatActivity {
+public class ContactActivity extends AppCompatActivity implements View.OnClickListener{
     @BindView(R.id.rl_title)
     RelativeLayout rlTitle;
     @BindView(R.id.iv_search)
@@ -44,16 +45,21 @@ public class ContactActivity extends AppCompatActivity {
     EditText etSearchKey;
     @BindView(R.id.rv_contacts)
     RecyclerView rvContacts;
+    @BindView(R.id.bt_cancel)
+    Button btCancel;
+    @BindView(R.id.bt_confirm)
+    Button btConfirm;
 
     private List<Contact> mContactList;
     private List<Contact> mFiltedContactList;
+    private ArrayList<Contact> mSelectContactList;
     private LinearLayoutManager mLinearLayoutManager;
     private ContactAdapter mContactAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_contact);
+        setContentView(R.layout.activity_contact_mult);
         ButterKnife.bind(this);
 
         mLinearLayoutManager = new LinearLayoutManager(this);
@@ -64,6 +70,9 @@ public class ContactActivity extends AppCompatActivity {
         mFiltedContactList = new ArrayList<>();
         mContactList = ContactsUtils.readContacts(this);
         mContactAdapter.updateContactList(mContactList);
+
+        btCancel.setOnClickListener(this);
+        btConfirm.setOnClickListener(this);
 
         etSearchKey.addTextChangedListener(new TextWatcher() {
             @Override
@@ -111,6 +120,28 @@ public class ContactActivity extends AppCompatActivity {
         activity.startActivityForResult(intent, requestCode);
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.bt_confirm:
+                Intent intent = new Intent();
+                mSelectContactList = new ArrayList<>();
+                for (Contact c : mContactList) {
+                    if (c.isSelected()){
+                        mSelectContactList.add(c);
+                    }
+                }
+                intent.putParcelableArrayListExtra(Constants.KEY_SELECTED_CONTACT,mSelectContactList);
+                setResult(0,intent);
+                this.finish();
+                break;
+
+            case R.id.bt_cancel:
+                this.finish();
+                break;
+        }
+    }
+
     class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactViewHolder> {
 
         private List<Contact> mContactList;
@@ -132,12 +163,16 @@ public class ContactActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(ContactViewHolder holder, int position) {
+        public void onBindViewHolder(final ContactViewHolder holder, int position) {
             final Contact contact = mContactList.get(position);
             String name = contact.getName();
             String phoneNumber = contact.getPhoneNumber();
+            final boolean selected = contact.isSelected();
             holder.tvUserName.setText(name);
             holder.tvNumber.setText(phoneNumber);
+            holder.ivSelect.setVisibility(View.VISIBLE);
+            holder.ivSelect.setSelected(selected);
+
             if (TextUtils.isEmpty(name)) {
                 contact.setName(phoneNumber);
                 holder.tvUserName.setText(contact.getName());
@@ -146,10 +181,8 @@ public class ContactActivity extends AppCompatActivity {
             holder.rlRoot.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent();
-                    intent.putExtra(Constants.KEY_CONTACT_RESULT, contact);
-                    setResult(0, intent);
-                    finish();
+                    holder.ivSelect.setSelected(!contact.isSelected());
+                    contact.setSelected(!contact.isSelected());
                 }
             });
         }
@@ -168,6 +201,8 @@ public class ContactActivity extends AppCompatActivity {
             TextView tvNumber;
             @BindView(R.id.rl_root)
             RelativeLayout rlRoot;
+            @BindView(R.id.iv_select)
+            ImageView ivSelect;
 
             ContactViewHolder(View itemView) {
                 super(itemView);
