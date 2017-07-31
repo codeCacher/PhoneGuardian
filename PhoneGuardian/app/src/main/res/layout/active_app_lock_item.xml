@@ -22,18 +22,28 @@
         <TextView
             android:lines="1"
             android:ellipsize="end"
+            android:maxWidth="150dp"
             android:id="@+id/tv_name"
-            android:layout_marginRight="15dp"
-            android:layout_toLeftOf="@+id/tv_detail"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="应用名"
             android:textColor="@android:color/black"
             android:textSize="15sp"
             android:textStyle="bold" />
 
+        <ImageView
+            android:visibility="invisible"
+            android:id="@+id/iv_lock"
+            android:layout_marginStart="5dp"
+            android:layout_alignTop="@+id/tv_name"
+            android:layout_alignBottom="@+id/tv_name"
+            android:layout_toEndOf="@+id/tv_name"
+            android:src="@drawable/lock"
+            android:layout_width="15dp"
+            android:layout_height="15dp" />
+
         <TextView
-            android:id="@+id/tv_state"
+            android:id="@+id/tv_lock_state"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_name"
@@ -41,23 +51,13 @@
             android:textColor="@color/colorGrayBlack"
             android:textSize="12sp" />
 
-        <ImageView
+        <android.support.v7.widget.SwitchCompat
+            android:clickable="false"
             android:layout_centerVertical="true"
-            android:id="@+id/iv_detail"
-            android:src="@drawable/arrow_more_right"
+            android:id="@+id/sc_check_state"
+            android:src="@drawable/checkbox_selector"
             android:layout_marginEnd="15dp"
             android:layout_alignParentEnd="true"
-            android:layout_width="25dp"
-            android:layout_height="25dp" />
-
-        <TextView
-            android:id="@+id/tv_detail"
-            android:layout_marginRight="15dp"
-            android:textColor="@color/colorGrayBlack"
-            android:textSize="12sp"
-            android:text="详情"
-            android:layout_toLeftOf="@+id/iv_detail"
-            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </RelativeLayout>

@@ -1,4 +1,4 @@
-package com.cs.phoneguardian.intercept.view;
+package com.cs.phoneguardian.intercept.view.InterceptContent;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -41,7 +41,7 @@ public class InterceptFragment extends Fragment {
 
     private int mType = 0;
     private RecyclerView.Adapter mAdapter;
-    private InterceptContract.Presenter mPresenter;
+    private InterceptContract.InterceptBasePresenter mPresenter;
 
     @Nullable
     @Override
@@ -83,7 +83,7 @@ public class InterceptFragment extends Fragment {
         this.mType = type;
     }
 
-    public void setPresenter(InterceptContract.Presenter presenter) {
+    public void setPresenter(InterceptContract.InterceptBasePresenter presenter) {
         this.mPresenter = presenter;
     }
 

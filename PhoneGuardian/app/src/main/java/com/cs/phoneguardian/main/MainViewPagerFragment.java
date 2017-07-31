@@ -15,7 +15,7 @@ import com.cs.phoneguardian.accelerate.AccActivity;
 import com.cs.phoneguardian.applock.AppLockActivity;
 import com.cs.phoneguardian.clearcache.ClearCacheActivity;
 import com.cs.phoneguardian.guardian.activity.GuardActivity;
-import com.cs.phoneguardian.intercept.view.InterceptAcivity;
+import com.cs.phoneguardian.intercept.view.InterceptContent.InterceptAcivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

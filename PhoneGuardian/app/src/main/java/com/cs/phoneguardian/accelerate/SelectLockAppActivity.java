@@ -192,7 +192,7 @@ public class SelectLockAppActivity extends AppCompatActivity implements SettingV
             TextView tvName;
             @BindView(R.id.iv_lock)
             ImageView ivLock;
-            @BindView(R.id.tv_state)
+            @BindView(R.id.tv_lock_state)
             TextView tvState;
             @BindView(R.id.sc_state)
             SwitchCompat scState;

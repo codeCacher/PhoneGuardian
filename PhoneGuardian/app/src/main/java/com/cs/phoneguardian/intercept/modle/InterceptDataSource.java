@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.cs.phoneguardian.bean.InterceptContact;
 import com.cs.phoneguardian.bean.InterceptPhoneCall;
 import com.cs.phoneguardian.bean.InterceptSMS;
+import com.cs.phoneguardian.intercept.InterceptContract;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -110,20 +111,86 @@ public class InterceptDataSource implements InterceptBaseDataSource {
     }
 
     /**
-     * 向拦截联系人列表中添加一项
-     *
-     * @param contract 要添加的联系人对象
+     * 根据电话号码获取拦截联系人对象
+     * @param phoneNumber 要获取的拦截联系人电话号码
+     * @return 拦截联系人对象
+     */
+    @Override
+    public InterceptContact getInterceptContact(String phoneNumber) {
+        InterceptContact contact = new InterceptContact();
+        Cursor cursor = mDatabase.query(InterceptPersistenceContract.AppEntry.INTERCEPT_CONTACT_TABLE_NAME,
+                null,InterceptPersistenceContract.AppEntry.CONTACT_PHONE_NUMBER+"=?",new String[]{phoneNumber},null,null,null);
+        if (cursor == null) {
+            return null;
+        }
+        if (cursor.moveToNext()) {
+            int idIndex = cursor.getColumnIndex(InterceptPersistenceContract.AppEntry._ID);
+            int nameIndex = cursor.getColumnIndex(InterceptPersistenceContract.AppEntry.CONTACT_NAME);
+            int numberIndex = cursor.getColumnIndex(InterceptPersistenceContract.AppEntry.CONTACT_PHONE_NUMBER);
+            int typeIndex = cursor.getColumnIndex(InterceptPersistenceContract.AppEntry.INTERCEPT_TYPE);
+
+            int id = cursor.getInt(idIndex);
+            String name = cursor.getString(nameIndex);
+            String number = cursor.getString(numberIndex);
+            int type = cursor.getInt(typeIndex);
+
+            contact.setId(id);
+            contact.setName(name);
+            contact.setPhoneNumber(number);
+            contact.setInterceptType(type);
+            cursor.close();
+            return contact;
+        }else {
+            cursor.close();
+            return null;
+        }
+    }
+
+    /**
+     * 更新指点号码联系人拦截状态
+     * @param phoneNumber 要修改拦截状态的联系人号码
+     * @param type 要修改成的拦截状态
+     * @return
+     */
+    @Override
+    public long updateInterceptContactType(String phoneNumber,int type) {
+        ContentValues values = new ContentValues();
+        values.put(InterceptPersistenceContract.AppEntry.INTERCEPT_TYPE,type);
+        return mDatabase.update(InterceptPersistenceContract.AppEntry.INTERCEPT_CONTACT_TABLE_NAME,
+                values,InterceptPersistenceContract.AppEntry.CONTACT_PHONE_NUMBER+"=?",new String[]{phoneNumber});
+    }
+
+    /**
+     * 向拦截联系人列表中添加一项,首先检测列表中是否有相同号码，如果有则更新姓名和拦截类型，否则添加联系人
+     * 保证拦截联系人中没有重复的号码
+     * @param contact 要添加的联系人对象
      * @return 影响的行数
      */
     @Override
-    public long insertInterceptContact(InterceptContact contract) {
-        ContentValues values = new ContentValues();
-        values.put(InterceptPersistenceContract.AppEntry.CONTACT_NAME, contract.getName());
-        values.put(InterceptPersistenceContract.AppEntry.CONTACT_PHONE_NUMBER, contract.getPhoneNumber());
-        values.put(InterceptPersistenceContract.AppEntry.INTERCEPT_TYPE, contract.getInterceptType());
+    public long insertInterceptContact(InterceptContact contact) {
+        List<InterceptContact> interceptContactList = getInterceptContactList();
+        boolean exist = false;
+        for (InterceptContact inContact : interceptContactList) {
+            if(contact.getPhoneNumber().equals(inContact.getPhoneNumber())){
+                exist = true;
+                break;
+            }
+        }
+        if(!exist){
+            ContentValues values = new ContentValues();
+            values.put(InterceptPersistenceContract.AppEntry.CONTACT_NAME, contact.getName());
+            values.put(InterceptPersistenceContract.AppEntry.CONTACT_PHONE_NUMBER, contact.getPhoneNumber());
+            values.put(InterceptPersistenceContract.AppEntry.INTERCEPT_TYPE, contact.getInterceptType());
 
-        return mDatabase.insert(InterceptPersistenceContract.AppEntry.INTERCEPT_CONTACT_TABLE_NAME,
-                null, values);
+            return mDatabase.insert(InterceptPersistenceContract.AppEntry.INTERCEPT_CONTACT_TABLE_NAME,
+                    null, values);
+        }else {
+            ContentValues values = new ContentValues();
+            values.put(InterceptPersistenceContract.AppEntry.CONTACT_NAME, contact.getName());
+            values.put(InterceptPersistenceContract.AppEntry.INTERCEPT_TYPE, contact.getInterceptType());
+            return mDatabase.update(InterceptPersistenceContract.AppEntry.INTERCEPT_CONTACT_TABLE_NAME,
+                    values,InterceptPersistenceContract.AppEntry.CONTACT_PHONE_NUMBER+"=?",new String[]{contact.getPhoneNumber()});
+        }
     }
 
     /**

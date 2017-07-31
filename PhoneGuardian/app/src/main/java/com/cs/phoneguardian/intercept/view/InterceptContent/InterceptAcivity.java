@@ -1,14 +1,14 @@
-package com.cs.phoneguardian.intercept.view;
+package com.cs.phoneguardian.intercept.view.InterceptContent;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -17,28 +17,26 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cs.phoneguardian.R;
-import com.cs.phoneguardian.bean.InterceptContact;
 import com.cs.phoneguardian.bean.InterceptPhoneCall;
 import com.cs.phoneguardian.bean.InterceptSMS;
 import com.cs.phoneguardian.intercept.InterceptContract;
 import com.cs.phoneguardian.intercept.modle.InterceptDataSource;
-import com.cs.phoneguardian.intercept.modle.InterceptPersistenceContract;
-import com.cs.phoneguardian.intercept.presenter.InterceptPresenter;
+import com.cs.phoneguardian.intercept.view.InterceptSettingActivity;
 
-import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.cs.phoneguardian.intercept.presenter.InterceptPresenter.PAGE_PHONE_CALL;
+import static com.cs.phoneguardian.intercept.presenter.InterceptPresenter.PAGE_SMS;
+
 /**
  * Created by Administrator on 2017/7/23.
  */
 
-public class InterceptAcivity extends AppCompatActivity implements InterceptContract.View,View.OnClickListener{
+public class InterceptAcivity extends AppCompatActivity implements InterceptContract.InterceptBaseView,View.OnClickListener{
     @BindView(R.id.rl_title)
     RelativeLayout rlTitle;
     @BindView(R.id.bt_sms)
@@ -62,7 +60,7 @@ public class InterceptAcivity extends AppCompatActivity implements InterceptCont
     @BindView(R.id.rl_bottom)
     RelativeLayout rlBottom;
 
-    private InterceptContract.Presenter mPresenter;
+    private InterceptContract.InterceptBasePresenter mPresenter;
     private List<InterceptFragment> mFragmentList;
 
     @Override
@@ -72,7 +70,7 @@ public class InterceptAcivity extends AppCompatActivity implements InterceptCont
 
         ButterKnife.bind(this);
 
-        InterceptPresenter.getInstance(this,this,InterceptDataSource.getInstance(this));
+        com.cs.phoneguardian.intercept.presenter.InterceptPresenter.getInstance(this,this,InterceptDataSource.getInstance(this));
 
         mFragmentList = new ArrayList<>();
         InterceptFragment smsFragment = new InterceptFragment();
@@ -129,7 +127,7 @@ public class InterceptAcivity extends AppCompatActivity implements InterceptCont
     }
 
     @Override
-    public void setPresenter(InterceptContract.Presenter presenter) {
+    public void setPresenter(InterceptContract.InterceptBasePresenter presenter) {
         this.mPresenter = presenter;
     }
 
@@ -145,7 +143,7 @@ public class InterceptAcivity extends AppCompatActivity implements InterceptCont
                 break;
 
             case R.id.rl_setting:
-
+                InterceptSettingActivity.startInterceptSettingActivity(this);
                 break;
 
             case R.id.rl_del:
@@ -160,17 +158,27 @@ public class InterceptAcivity extends AppCompatActivity implements InterceptCont
     }
 
     @Override
-    public void showInterceptSms() {
+    public void showInterceptSms(int smsSize) {
         btSms.setSelected(true);
         btPhone.setSelected(false);
         vpContent.setCurrentItem(0);
+        if(smsSize==0){
+            disableDeleteAllBtn();
+        }else {
+            enableDeleteAllBtn();
+        }
     }
 
     @Override
-    public void showInterceptPhone() {
+    public void showInterceptPhone(int phoneSize) {
         btSms.setSelected(false);
         btPhone.setSelected(true);
         vpContent.setCurrentItem(1);
+        if(phoneSize==0){
+            disableDeleteAllBtn();
+        }else {
+            enableDeleteAllBtn();
+        }
     }
 
     @Override
@@ -199,7 +207,91 @@ public class InterceptAcivity extends AppCompatActivity implements InterceptCont
     }
 
     @Override
-    public void showSMSDetailDialog(InterceptSMS sms) {
+    public void updateDelAllBtn(int smsSize,int phoneCallSize) {
+        if(vpContent.getCurrentItem()==PAGE_SMS){
+            if(smsSize==0){
+                disableDeleteAllBtn();
+            }else {
+                enableDeleteAllBtn();
+            }
+        }else if(vpContent.getCurrentItem()==PAGE_PHONE_CALL){
+            if(phoneCallSize==0){
+                disableDeleteAllBtn();
+            }else {
+                enableDeleteAllBtn();
+            }
+        }
+    }
 
+    @Override
+    public void showSMSDetailDialog(final InterceptSMS sms) {
+        String name = sms.getName();
+        String phoneNumber = sms.getPhoneNumber();
+        String content = sms.getContent();
+        showDialog(name + " " + phoneNumber, content, new OnButtonClickedListener() {
+            @Override
+            public void OnAddButtonClicked() {
+                mPresenter.contactBlackToWhite(sms.getPhoneNumber());
+            }
+
+            @Override
+            public void OnDeleteButtonClicked() {
+                mPresenter.deleteSMS(sms.getId());
+            }
+        });
+    }
+
+    @Override
+    public void showPhoneCallDetailDialog(final InterceptPhoneCall phoneCall) {
+        String name = phoneCall.getName();
+        String phoneNumber = phoneCall.getPhoneNumber();
+        showDialog(name, phoneNumber, new OnButtonClickedListener() {
+            @Override
+            public void OnAddButtonClicked() {
+                mPresenter.contactBlackToWhite(phoneCall.getPhoneNumber());
+            }
+
+            @Override
+            public void OnDeleteButtonClicked() {
+                mPresenter.deletePhoneCall(phoneCall.getId());
+            }
+        });
+    }
+
+    private interface OnButtonClickedListener{
+        void OnAddButtonClicked();
+        void OnDeleteButtonClicked();
+    }
+    private void showDialog(String title, String content, final OnButtonClickedListener listener){
+        View view = View.inflate(this, R.layout.intercept_add_del_item, null);
+        final AlertDialog addDelDialog = new AlertDialog.Builder(this)
+                .setView(view)
+                .create();
+
+        TextView tvTitle = (TextView) view.findViewById(R.id.tv_title);
+        TextView tvContent = (TextView) view.findViewById(R.id.tv_content);
+        Button btAddWhite = (Button) view.findViewById(R.id.bt_add_white);
+        Button btDel = (Button) view.findViewById(R.id.bt_del);
+
+        tvTitle.setText(title);
+        tvContent.setText(content);
+
+        btAddWhite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addDelDialog.dismiss();
+                listener.OnAddButtonClicked();
+            }
+        });
+
+        btDel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addDelDialog.dismiss();
+                listener.OnDeleteButtonClicked();
+            }
+        });
+
+        addDelDialog.show();
     }
 }

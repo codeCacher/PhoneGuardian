@@ -19,8 +19,10 @@ package com.cs.phoneguardian.intercept;
 
 import com.cs.phoneguardian.BasePresenter;
 import com.cs.phoneguardian.BaseView;
+import com.cs.phoneguardian.bean.InterceptContact;
 import com.cs.phoneguardian.bean.InterceptPhoneCall;
 import com.cs.phoneguardian.bean.InterceptSMS;
+import com.cs.phoneguardian.intercept.presenter.BlackWhitePresenter;
 
 import java.util.List;
 
@@ -29,17 +31,30 @@ import java.util.List;
  */
 public interface InterceptContract {
 
-    interface View extends BaseView<Presenter> {
-        void showInterceptSms();
-        void showInterceptPhone();
+    interface InterceptBaseView extends BaseView<InterceptBasePresenter> {
+        void showInterceptSms(int smsSize);
+        void showInterceptPhone(int phoneSize);
         void updateSMSList(List<InterceptSMS> list);
         void updatePhoneCallList(List<InterceptPhoneCall> list);
         void enableDeleteAllBtn();
         void disableDeleteAllBtn();
+        void updateDelAllBtn(int smsSize,int phoneCallSize);
         void showSMSDetailDialog(InterceptSMS sms);
+        void showPhoneCallDetailDialog(InterceptPhoneCall phoneCall);
     }
 
-    interface Presenter extends BasePresenter {
+    interface BlackWhiteBaseView extends BaseView<BlackWhitePresenter> {
+        public static final int BLACK_STATE = 0;
+        public static final int WHITE_STATE = 1;
+        void showBlack();
+        void showWhite();
+        void updateBlackList(List<InterceptContact> list);
+        void updateWhiteList(List<InterceptContact> list);
+        void showBlackDeleteDialog(InterceptContact contact);
+        void showWhiteDeleteDialog(InterceptContact contact);
+    }
+
+    interface InterceptBasePresenter extends BasePresenter {
         void selectInterceptSms();
         void selectInterceptPhone();
         void selectSMS(int position);
@@ -48,5 +63,19 @@ public interface InterceptContract {
         void deletAllPhoneCall();
         void updateSMS();
         void updatePhoneCall();
+        void contactBlackToWhite(String phoneNumber);
+        void deleteSMS(int id);
+        void deletePhoneCall(int id);
+    }
+
+    interface BlackWhiteBasePresenter extends BasePresenter {
+        void init(int state);
+        void addBlackContact();
+        void addWhiteContact();
+        void selectBlackContact(int position);
+        void selectWhiteContact(int position);
+        void updateBlack();
+        void updateWhite();
+        void deleteContact(String number);
     }
 }

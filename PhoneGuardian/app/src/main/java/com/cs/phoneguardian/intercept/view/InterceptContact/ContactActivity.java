@@ -1,4 +1,4 @@
-package com.cs.phoneguardian.guardian.activity;
+package com.cs.phoneguardian.intercept.view.InterceptContact;
 
 import android.app.Activity;
 import android.content.Context;

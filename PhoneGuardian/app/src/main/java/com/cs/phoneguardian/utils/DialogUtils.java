@@ -51,9 +51,10 @@ public class DialogUtils {
     }
 
     /**
-     * @param context
-     * @param correctPsd
-     * @param listener
+     * 显示输入密码对话框
+     * @param context 上下文
+     * @param correctPsd 正确的密码
+     * @param listener 点击按钮之后的回调函数
      */
     public static void showPasswordDialog(final Context context, final String correctPsd, final OnButtonClickedListener listener) {
         View view = View.inflate(context, R.layout.password_dialog, null);

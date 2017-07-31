@@ -2,7 +2,6 @@ package com.cs.phoneguardian.guardian.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -64,7 +63,7 @@ public class MergencyContactSettingFragment extends Fragment implements View.OnC
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(data!=null){
-            Contact contact = (Contact)data.getParcelableExtra(Constants.KEY_MERCONTACT_RESULT);
+            Contact contact = (Contact)data.getParcelableExtra(Constants.KEY_CONTACT_RESULT);
             etPhone.setText(contact.getPhoneNumber());
         }
     }

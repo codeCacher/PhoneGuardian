@@ -63,7 +63,7 @@ public class ContactSettingActivity extends AppCompatActivity implements View.On
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(data!=null){
-            Contact contact = (Contact)data.getParcelableExtra(Constants.KEY_MERCONTACT_RESULT);
+            Contact contact = (Contact)data.getParcelableExtra(Constants.KEY_CONTACT_RESULT);
             etPhone.setText(contact.getPhoneNumber());
         }
     }

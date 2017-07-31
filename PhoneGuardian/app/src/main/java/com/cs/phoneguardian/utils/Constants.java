@@ -70,6 +70,28 @@ public class Constants {
      */
     public static final String KEY_ENABLE_APP_LOCK = "key_enable_app_lock";
 
+    //骚扰拦截设置sp
+    /**
+     * 是否开启骚扰拦截的sp键值
+     */
+    public static final String KEY_ENABLE_INTERCEPT = "key_enable_intercept";
+    /**
+     * 拦截规则：拦截黑名单是否开启键值
+     */
+    public static final String KEY_INTERCEPT_RULE_BLACK = "key_intercept_rule_black";
+    /**
+     * 拦截规则：拦截陌生人是否开启键值
+     */
+    public static final String KEY_INTERCEPT_RULE_STRANGER = "key_intercept_rule_stranger";
+    /**
+     * 拦截规则：仅允许白名单是否开启键值
+     */
+    public static final String KEY_INTERCEPT_RULE_WHITE = "key_intercept_rule_white";
+    /**
+     * 是否开启拦截后通知栏通知的sp键值
+     */
+    public static final String KEY_INTERCEPT_NOTIFY_ENALBE = "key_intercept_notify_enalbe";
+
     //Intent Filter
     /**
      * 应用锁解锁之后告知服务停止锁定该应用的Intent filter
@@ -78,13 +100,18 @@ public class Constants {
 
     //Activity之间传递数据的Key
     /**
-     * 紧急联系人手机号码选择结果
+     * 联系人手机号码选择结果
      */
-    public static final String KEY_MERCONTACT_RESULT = "keyMerContactResult";
+    public static final String KEY_CONTACT_RESULT = "keyMerContactResult";
 
     /**
      * 包名
      */
     public static final String KEY_PKG_NAME_EXTRA = "key_pkg_name_extra";
+
+    /**
+     * 打开黑白名单时首先打开的页面是黑名单还是白名单状态键值
+     */
+    public static final String KEY_BLACK_WHITE_CONTACT_START_STATE = "key_black_white_contact_start_state";
 
 }

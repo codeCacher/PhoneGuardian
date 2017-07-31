@@ -198,7 +198,7 @@ public class ActiveAppAdapter extends RecyclerView.Adapter {
         ImageView ivIcon;
         @BindView(R.id.tv_name)
         TextView tvName;
-        @BindView(R.id.tv_lock_state)
+        @BindView(R.id.tv_state)
         TextView tvMemSize;
         @BindView(R.id.sc_check_state)
         ImageView ivCheckState;
@@ -218,7 +218,7 @@ public class ActiveAppAdapter extends RecyclerView.Adapter {
         ImageView ivIcon;
         @BindView(R.id.tv_name)
         TextView tvName;
-        @BindView(R.id.tv_lock_state)
+        @BindView(R.id.tv_state)
         TextView tvMemSize;
         @BindView(R.id.iv_detail)
         ImageView ivDetail;

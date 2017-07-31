@@ -40,7 +40,7 @@ public final class InterceptPersistenceContract {
          */
         public static final int INTERCEPT_TYPE_PHONE = 1;
         /**
-         * 拦截类型，拦截短信和来电
+         * 拦截类型，拦截短信和来电，黑名单
          */
         public static final int INTERCEPT_TYPE_ALL = 2;
         /**
@@ -52,7 +52,7 @@ public final class InterceptPersistenceContract {
          */
         public static final int INTERCEPT_TYPE_NO_PHONE = 4;
         /**
-         * 拦截类型，不拦截所有
+         * 拦截类型，不拦截所有，白名单
          */
         public static final int INTERCEPT_TYPE_NONE = 5;
 

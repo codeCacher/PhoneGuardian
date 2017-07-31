@@ -56,7 +56,10 @@
             android:windowSoftInputMode="adjustResize"
             android:launchMode="singleInstance"
             android:excludeFromRecents="true"/>
-        <activity android:name=".intercept.view.InterceptAcivity" />
+        <activity android:name=".intercept.view.InterceptContent.InterceptAcivity" />
+        <activity android:name=".intercept.view.InterceptSettingActivity" />
+        <activity android:name=".intercept.view.InterceptRuleActivity" />
+        <activity android:name=".intercept.view.InterceptContact.BlackWhiteContactActivity" />
 
         <receiver
             android:name=".global.AdminReceiver"

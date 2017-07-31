@@ -1,4 +1,4 @@
-package com.cs.phoneguardian.intercept.view;
+package com.cs.phoneguardian.intercept.view.InterceptContent;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,7 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cs.phoneguardian.R;
-import com.cs.phoneguardian.bean.InterceptPhoneCall;
+import com.cs.phoneguardian.bean.InterceptSMS;
 import com.cs.phoneguardian.intercept.InterceptContract;
 
 import java.sql.Timestamp;
@@ -23,55 +23,56 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2017/7/23.
  */
 
-public class InterceptPhoneAdaper extends RecyclerView.Adapter<InterceptPhoneAdaper.PhoneViewHolder> {
+public class InterceptSMSAdapter extends RecyclerView.Adapter<InterceptSMSAdapter.SMSViewHolder> {
 
     private Context mContext;
-    InterceptContract.Presenter mPresenter;
-    List<InterceptPhoneCall> mPhoneCallList;
+    InterceptContract.InterceptBasePresenter mPresenter;
+    List<InterceptSMS> mSMSList;
 
-    public InterceptPhoneAdaper(Context context, InterceptContract.Presenter presenter) {
-        mPhoneCallList = new ArrayList<>();
+    public InterceptSMSAdapter(Context context, InterceptContract.InterceptBasePresenter presenter) {
+        mSMSList = new ArrayList<>();
         this.mContext = context;
         this.mPresenter = presenter;
     }
 
-    public void updateList(List<InterceptPhoneCall> list) {
-        this.mPhoneCallList = list;
+    public void updateList(List<InterceptSMS> list){
+        this.mSMSList = list;
         notifyDataSetChanged();
     }
 
     @Override
-    public PhoneViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new PhoneViewHolder(LayoutInflater.from(mContext).inflate(R.layout.intercept_item, parent, false));
+    public SMSViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new SMSViewHolder(LayoutInflater.from(mContext).inflate(R.layout.intercept_item, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(PhoneViewHolder holder, int position) {
-        InterceptPhoneCall phoneCall = mPhoneCallList.get(position);
-        String name = phoneCall.getName();
-        String phoneNumber = phoneCall.getPhoneNumber();
-        Timestamp timestamp = phoneCall.getTime();
+    public void onBindViewHolder(SMSViewHolder holder, int position) {
+        InterceptSMS sms = mSMSList.get(position);
+        String name = sms.getName();
+        String content = sms.getContent();
+        Timestamp timestamp = sms.getTime();
         int month = timestamp.getMonth()+1;
         int day = timestamp.getDate();
 
         holder.tvName.setText(name);
-        holder.tvText.setText(phoneNumber);
-        holder.tvDate.setText(month + "/" + day);
+        holder.tvText.setText(content);
+        holder.tvDate.setText(month+"/"+day);
         final int fPosition = position;
         holder.rlRoot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPresenter.selectPhoneCall(fPosition);
+                mPresenter.selectSMS(fPosition);
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return mPhoneCallList.size();
+        return mSMSList.size();
     }
 
-    class PhoneViewHolder extends RecyclerView.ViewHolder {
+    class SMSViewHolder extends RecyclerView.ViewHolder {
+
         @BindView(R.id.tv_date)
         TextView tvDate;
         @BindView(R.id.v_vertical)
@@ -83,9 +84,9 @@ public class InterceptPhoneAdaper extends RecyclerView.Adapter<InterceptPhoneAda
         @BindView(R.id.rl_root)
         RelativeLayout rlRoot;
 
-        public PhoneViewHolder(View itemView) {
+        public SMSViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+            ButterKnife.bind(this,itemView);
         }
     }
 }

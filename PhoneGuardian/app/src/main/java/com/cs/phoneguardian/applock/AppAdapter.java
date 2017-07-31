@@ -51,7 +51,7 @@ public class AppAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new AppLockViewHolder(LayoutInflater.from(mContext).inflate(R.layout.active_user_app_item, parent, false));
+        return new AppLockViewHolder(LayoutInflater.from(mContext).inflate(R.layout.active_app_lock_item, parent, false));
     }
 
     @Override

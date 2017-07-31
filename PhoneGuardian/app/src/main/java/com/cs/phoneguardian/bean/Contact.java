@@ -13,17 +13,7 @@ public class Contact implements Parcelable {
     private String phoneNumber;
     private String email;
     private String address;
-
-    public Contact() {
-    }
-
-    public Contact(String id, String name, String phoneNumber, String email, String address) {
-        this.id = id;
-        this.name = name;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-        this.address = address;
-    }
+    private boolean selected;
 
     protected Contact(Parcel in) {
         id = in.readString();
@@ -31,6 +21,7 @@ public class Contact implements Parcelable {
         phoneNumber = in.readString();
         email = in.readString();
         address = in.readString();
+        selected = in.readByte() != 0;
     }
 
     public static final Creator<Contact> CREATOR = new Creator<Contact>() {
@@ -45,15 +36,7 @@ public class Contact implements Parcelable {
         }
     };
 
-    @Override
-    public String toString() {
-        return "Contact{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", email='" + email + '\'' +
-                ", address='" + address + '\'' +
-                '}';
+    public Contact() {
     }
 
     @Override
@@ -68,6 +51,7 @@ public class Contact implements Parcelable {
         dest.writeString(phoneNumber);
         dest.writeString(email);
         dest.writeString(address);
+        dest.writeByte((byte) (selected ? 1 : 0));
     }
 
     public String getId() {
@@ -111,4 +95,11 @@ public class Contact implements Parcelable {
         this.address = address;
     }
 
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
 }
