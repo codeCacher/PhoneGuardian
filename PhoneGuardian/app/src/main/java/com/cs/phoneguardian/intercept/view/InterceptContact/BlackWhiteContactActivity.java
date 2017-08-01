@@ -52,6 +52,12 @@ public class BlackWhiteContactActivity extends AppCompatActivity implements View
     @BindView(R.id.rl_bottom)
     RelativeLayout rlBottom;
 
+    //request code
+    private static final int REQUEST_BLACK_CONTACT = 0;
+    private static final int REQUEST_WHITE_CONTACT = 1;
+    private static final int REQUEST_BLACK_INPUT = 2;
+    private static final int REQUEST_WHITE_INPUT = 3;
+
     private ArrayList<BlackWhiteFragment> mFragmentList;
     private InterceptContract.BlackWhiteBasePresenter mPresenter;
 
@@ -102,14 +108,15 @@ public class BlackWhiteContactActivity extends AppCompatActivity implements View
         btBlack.setOnClickListener(this);
         btWhite.setOnClickListener(this);
         rlAdd.setOnClickListener(this);
+
+        //初始化状态
+        int state = getIntent().getIntExtra(Constants.KEY_BLACK_WHITE_CONTACT_START_STATE, BLACK_STATE);
+        mPresenter.init(state);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        //初始化状态
-        int state = getIntent().getIntExtra(Constants.KEY_BLACK_WHITE_CONTACT_START_STATE, BLACK_STATE);
-        mPresenter.init(state);
     }
 
     public static void startBlackWhiteContactActivity(Context context, int startState) {
@@ -123,10 +130,16 @@ public class BlackWhiteContactActivity extends AppCompatActivity implements View
         super.onActivityResult(requestCode, resultCode, data);
         if(data!=null){
             ArrayList<Contact> mSelectContactList = data.getParcelableArrayListExtra(Constants.KEY_SELECTED_CONTACT);
-            if(requestCode==BLACK_STATE){
-                mPresenter.addBlackContact();
-            }else {
-                mPresenter.addWhiteContact();
+            switch (requestCode){
+                case REQUEST_BLACK_CONTACT:
+                case REQUEST_BLACK_INPUT:
+                    mPresenter.addBlackContact(mSelectContactList);
+                    break;
+
+                case REQUEST_WHITE_CONTACT:
+                case REQUEST_WHITE_INPUT:
+                    mPresenter.addWhiteContact(mSelectContactList);
+                    break;
             }
         }
     }
@@ -143,12 +156,23 @@ public class BlackWhiteContactActivity extends AppCompatActivity implements View
                 break;
 
             case R.id.rl_add:
-                int currentItem = vpContent.getCurrentItem();
-                if(currentItem==BLACK_STATE){
-                    ContactActivity.startContactActivityForResult(this,this,BLACK_STATE);
-                }else {
-                    ContactActivity.startContactActivityForResult(this,this,WHITE_STATE);
-                }
+                showAddDialog(new OnAddDialogButtonClickedListener() {
+                    @Override
+                    public void OnContactListClicked() {
+                        int currentItem = vpContent.getCurrentItem();
+                        if(currentItem==BLACK_STATE){
+                            ContactActivity.startContactActivityForResult(BlackWhiteContactActivity.this,BlackWhiteContactActivity.this,REQUEST_BLACK_CONTACT);
+                        }else {
+                            ContactActivity.startContactActivityForResult(BlackWhiteContactActivity.this,BlackWhiteContactActivity.this,REQUEST_WHITE_CONTACT);
+                        }
+                    }
+
+                    @Override
+                    public void OnInputClicked() {
+                        //TODO 手动输入联系人
+                    }
+                });
+
                 break;
         }
     }
@@ -182,10 +206,10 @@ public class BlackWhiteContactActivity extends AppCompatActivity implements View
         String name = contact.getName();
         String phoneNumber = contact.getPhoneNumber();
 
-        showDialog(name + " " + phoneNumber, new OnButtonClickedListener() {
+        showDelDialog(name + " " + phoneNumber, new OnDelDialogButtonClickedListener() {
             @Override
             public void OnConfirmed() {
-                mPresenter.deleteContact(contact.getPhoneNumber());
+                mPresenter.deleteContact(contact.getPhoneNumber(),BlackWhitePresenter.BLACK_CONTACT);
             }
 
             @Override
@@ -200,10 +224,10 @@ public class BlackWhiteContactActivity extends AppCompatActivity implements View
         String name = contact.getName();
         String phoneNumber = contact.getPhoneNumber();
 
-        showDialog(name + " " + phoneNumber, new OnButtonClickedListener() {
+        showDelDialog(name + " " + phoneNumber, new OnDelDialogButtonClickedListener() {
             @Override
             public void OnConfirmed() {
-                mPresenter.deleteContact(contact.getPhoneNumber());
+                mPresenter.deleteContact(contact.getPhoneNumber(),BlackWhitePresenter.WHITE_CONTACT);
             }
 
             @Override
@@ -218,11 +242,11 @@ public class BlackWhiteContactActivity extends AppCompatActivity implements View
         this.mPresenter = presenter;
     }
 
-    private interface OnButtonClickedListener{
+    private interface OnDelDialogButtonClickedListener {
         void OnConfirmed();
         void OnCanceled();
     }
-    private void showDialog(String title, final OnButtonClickedListener listener){
+    private void showDelDialog(String title, final OnDelDialogButtonClickedListener listener){
         View view = View.inflate(this, R.layout.black_white_remove_dialog, null);
         final AlertDialog addDelDialog = new AlertDialog.Builder(this)
                 .setView(view)
@@ -248,6 +272,39 @@ public class BlackWhiteContactActivity extends AppCompatActivity implements View
             public void onClick(View v) {
                 addDelDialog.dismiss();
                 listener.OnConfirmed();
+            }
+        });
+
+        addDelDialog.show();
+    }
+
+    private interface OnAddDialogButtonClickedListener {
+        void OnContactListClicked();
+        void OnInputClicked();
+    }
+
+    private void showAddDialog(final OnAddDialogButtonClickedListener listener){
+        View view = View.inflate(this, R.layout.black_white_add_dialog, null);
+        final AlertDialog addDelDialog = new AlertDialog.Builder(this)
+                .setView(view)
+                .create();
+
+        Button btContact = (Button) view.findViewById(R.id.bt_contact);
+        Button btInput = (Button) view.findViewById(R.id.bt_input);
+
+        btContact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addDelDialog.dismiss();
+                listener.OnContactListClicked();
+            }
+        });
+
+        btInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addDelDialog.dismiss();
+                listener.OnInputClicked();
             }
         });
 

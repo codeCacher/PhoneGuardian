@@ -112,12 +112,12 @@ public class InterceptSettingActivity extends AppCompatActivity implements View.
             case R.id.rl_notify:
                 if(mEnableNotify){
                     mEnableNotify = false;
-                    tvNotify.setText("骚扰拦截未开启");
+                    tvNotify.setText("拦截通知未开启");
                     scNotify.setChecked(false);
                     SharedPreferencesUtils.putBoolean(this,Constants.KEY_INTERCEPT_NOTIFY_ENALBE,false);
                 }else {
                     mEnableNotify = true;
-                    tvNotify.setText("骚扰拦截开启");
+                    tvNotify.setText("拦截通知开启");
                     scNotify.setChecked(true);
                     SharedPreferencesUtils.putBoolean(this,Constants.KEY_INTERCEPT_NOTIFY_ENALBE,true);
                 }

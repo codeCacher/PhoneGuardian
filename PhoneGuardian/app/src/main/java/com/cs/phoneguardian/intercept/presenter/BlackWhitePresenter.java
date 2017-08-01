@@ -2,26 +2,23 @@ package com.cs.phoneguardian.intercept.presenter;
 
 import android.content.Context;
 
+import com.cs.phoneguardian.bean.Contact;
 import com.cs.phoneguardian.bean.InterceptContact;
-import com.cs.phoneguardian.bean.InterceptPhoneCall;
-import com.cs.phoneguardian.bean.InterceptSMS;
 import com.cs.phoneguardian.intercept.InterceptContract;
 import com.cs.phoneguardian.intercept.modle.InterceptDataSource;
 import com.cs.phoneguardian.intercept.modle.InterceptPersistenceContract;
-import com.cs.phoneguardian.utils.DialogUtils;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-
-import javax.sql.DataSource;
 
 /**
  * Created by Administrator on 2017/7/23.
  */
 
 public class BlackWhitePresenter implements InterceptContract.BlackWhiteBasePresenter {
+
+    public static final int BLACK_CONTACT = 0;
+    public static final int WHITE_CONTACT = 1;
 
     private final InterceptContract.BlackWhiteBaseView mView;
     private final InterceptDataSource mDataSource;
@@ -57,13 +54,27 @@ public class BlackWhitePresenter implements InterceptContract.BlackWhiteBasePres
     }
 
     @Override
-    public void addBlackContact() {
-
+    public void addBlackContact(ArrayList<Contact> mSelectContactList) {
+        for (Contact c : mSelectContactList) {
+            InterceptContact contact = new InterceptContact();
+            contact.setName(c.getName());
+            contact.setPhoneNumber(c.getPhoneNumber());
+            contact.setInterceptType(InterceptPersistenceContract.AppEntry.INTERCEPT_TYPE_ALL);
+            mDataSource.insertInterceptContact(contact);
+        }
+        updateBlack();
     }
 
     @Override
-    public void addWhiteContact() {
-
+    public void addWhiteContact(ArrayList<Contact> mSelectContactList) {
+        for (Contact c : mSelectContactList) {
+            InterceptContact contact = new InterceptContact();
+            contact.setName(c.getName());
+            contact.setPhoneNumber(c.getPhoneNumber());
+            contact.setInterceptType(InterceptPersistenceContract.AppEntry.INTERCEPT_TYPE_NONE);
+            mDataSource.insertInterceptContact(contact);
+        }
+        updateWhite();
     }
 
     @Override
@@ -89,7 +100,12 @@ public class BlackWhitePresenter implements InterceptContract.BlackWhiteBasePres
     }
 
     @Override
-    public void deleteContact(String number) {
+    public void deleteContact(String number,int type) {
         mDataSource.deleteInterceptContact(number);
+        if(type==BLACK_CONTACT){
+            updateBlack();
+        }else {
+            updateWhite();
+        }
     }
 }

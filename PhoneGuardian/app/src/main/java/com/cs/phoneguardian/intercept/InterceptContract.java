@@ -19,11 +19,13 @@ package com.cs.phoneguardian.intercept;
 
 import com.cs.phoneguardian.BasePresenter;
 import com.cs.phoneguardian.BaseView;
+import com.cs.phoneguardian.bean.Contact;
 import com.cs.phoneguardian.bean.InterceptContact;
 import com.cs.phoneguardian.bean.InterceptPhoneCall;
 import com.cs.phoneguardian.bean.InterceptSMS;
 import com.cs.phoneguardian.intercept.presenter.BlackWhitePresenter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -70,12 +72,12 @@ public interface InterceptContract {
 
     interface BlackWhiteBasePresenter extends BasePresenter {
         void init(int state);
-        void addBlackContact();
-        void addWhiteContact();
+        void addBlackContact(ArrayList<Contact> mSelectContactList);
+        void addWhiteContact(ArrayList<Contact> mSelectContactList);
         void selectBlackContact(int position);
         void selectWhiteContact(int position);
         void updateBlack();
         void updateWhite();
-        void deleteContact(String number);
+        void deleteContact(String number,int type);
     }
 }
